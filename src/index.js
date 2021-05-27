@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import "./css/index.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./css/App.css";
 import App from './App';
 import Hello from './Hello'
 import reportWebVitals from './reportWebVitals';
+import { EmployeeManagement } from './components/EmployeeManagement';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Hello />
+    <EmployeeManagement />
   </React.StrictMode>,
   document.getElementById('root')
 );
