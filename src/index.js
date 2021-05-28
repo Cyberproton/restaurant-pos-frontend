@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import Hello from './Hello'
+import FoodManagement from './components/FoodManagement'
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Hello />
+    <FoodManagement />
   </React.StrictMode>,
   document.getElementById('root')
 );
