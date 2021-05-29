@@ -4,13 +4,13 @@ import axios from './axios'
 
 function App() {
   function handleClick() {
-      axios.post('/', { helloMessage: 'Hello from React' })
+    axios.post('/', { helloMessage: 'Hello from Nowhere' })
       .then(response => alert(response.data.helloMessage), error => alert(error))
   }
 
   return (
     <div className="App">
-        <button type="button" onClick={handleClick}>Post Hello World</button>
+      <button type="button" onClick={handleClick}>Click Me</button>
     </div>
   );
 }

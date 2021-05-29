@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <title>Transaction History</title>
+  <link href="../views/css/styles.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type='text/javascript'>
+    $(function () {
+      $(".head").load("./elements/head.html");
+      $(".header").load("./elements/header.html");
+      $(".script-b").load("./elements/script-b.html");
+      $("#footer").load("footer.html");
+    });
+  </script>
+  <div class="head"></div>
+  <div class="header"></div>
+</head>
+
+<body>
+  <div class="container">
+    <h5 class="container-fluid navbar-conllapse" style="text-align:center; margin-top: 15px">
+      <i class="fa fa-history" aria-hidden="true"></i>
+      Lịch sử giao dịch
+    </h5>
+    <hr>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <table class="table bg-white rounded border">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Mã giao dịch</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col">Ngày giao dịch</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="row1">
+                <th scope="row">1</th>
+                <td>a12</td>
+                <td>100.000</td>
+                <td>12/03/2020</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">4</th>
+                <td></td>
+                <td></td>
+                <td></td>
+
+              </tr>
+              <tr>
+                <th scope="row">5</th>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="btn" onclick="document.querySelector('.modal').style.display='block'">Xóa lịch sử</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal">
+      <span class="btn-close" onclick="document.querySelector('.modal').style.display='none'">&times;</span>
+      <form action="http://localhost:3000/">
+        <div class="container-modal modal-content">
+          <h4>Xác nhận xóa?</h4>
+          <hr>
+          <div class="clearfix">
+            <button  onclick="document.querySelector('.modal').style.display='none'" type="button"
+              style="float: left; width: 48%;">Hủy</button>
+            <button id="confirmbtn" class="btn-danger" style="float: right; width: 48%;">Xóa</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="script-b"></div>
+</body>
+
+</html>

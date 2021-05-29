@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <title>User Infomation</title>
+  <link href="../views/css/styles.css" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type='text/javascript'>
+    $(function () {
+      $(".head").load("./elements/head.html");
+      $(".header").load("./elements/header.html");
+      $(".script-b").load("./elements/script-b.html");
+      $("#footer").load("footer.html");
+    });
+  </script>
+  <div class="head"></div>
+  <div class="header"></div>
+</head>
+
+<body>
+  <div class="container">
+    <div class="container-fluid">
+      <div class=" upper bold navbar-text">
+        <button class="btn" style="margin-right: 25%"><i class="fa fa-user"></i></button>
+        USER NAME
+        <button style="float:right"><a class="nonText-decoration" href="info_manage.html" target="_self">Chỉnh sửa thông
+            tin</a></button>
+      </div>
+    </div>
+    <br />
+    <p>
+      <b>Họ và tên:</b> <br/>
+      <b>Tên đăng nhập:</b> <br/>
+      <b>Mật khẩu</b>: <br/>
+      <b>Số điện thoại:</b><br/>
+    </p>
+    <button><a class="nonText-decoration" target="_self" href="history_.html">Lịch sử giao
+        dịch</a></button>
+    <br /><br />
+    <button onclick="document.querySelector('.modal').style.display='block'"><a class="nonText-decoration"
+        target="_blank">Xóa tài khoản</a></button>
+    <button style="float:right" id="confirmLogOut"><a class="nonText-decoration">Đăng xuất</a></button>
+    <div class="modal">
+      <span onclick="document.querySelector('.modal').style.display='none'" class="btn-close" title="Close"></span>
+      <form action="http://localhost:3000/">
+        <div class="container-modal modal-content">
+          <h4>Xóa Tài khoản</h4>
+          <hr>
+          <p>Bạn chắc chắn muốn xóa tài khoản không? Để xác nhận vui lòng nhập mật khẩu của bạn.</p>
+          <input type="password" placeholder="Nhập mật khẩu" class="password-input" required><br />
+          <div class="clearfix">
+            <button class="cancel-button" style="float: left; width: 49.5%;"
+              onclick="document.querySelector('.modal').style.display='none'">Cancel</button>
+            <button id="confirmbtn" style="float: right; width: 49.5%;">Delete</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <div class="script-b"></div>
+</body>
+
+</html>
