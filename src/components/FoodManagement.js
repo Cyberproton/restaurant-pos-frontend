@@ -97,12 +97,9 @@ export default class FoodManagement extends Component {
         this.setState(prev => ({
             foodSelected: foodSelected
         }))
-        console.log(foodSelected)
     }
 
     onFoodClicked(foodId, isSelected) {
-        console.log(foodId)
-        console.log(this.state.foodSelected)
         let fid = foodId
         if (foodId === this.state.foodSelected) {
             this.setState(prev => ({
@@ -152,7 +149,7 @@ export default class FoodManagement extends Component {
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
-                        Submit
+                        Xác nhận
                     </Button>
                 </Form>
             </div>
@@ -222,7 +219,7 @@ export default class FoodManagement extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={this.onDeleteFoodConfirmation}>
-                    Close
+                    Đóng
                 </Button>
                 <Button variant="danger">
                     Xóa món ăn
@@ -245,10 +242,10 @@ function FoodList(props) {
             <Table striped bordered hover size="sm" className="text-center shadow-lg">
             <thead>
                 <tr>
-                    <th>Selected</th>
+                    <th>Chọn</th>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Price</th>
+                    <th>Tên</th>
+                    <th>Giá</th>
                 </tr>
             </thead>
             <tbody>{foodList}</tbody>
@@ -257,7 +254,7 @@ function FoodList(props) {
     } else {
         return (
             <React.Fragment>
-                <div>We have no food here!</div>
+                <div>Có vẻ không có món nào cả!</div>
                 <br />
             </React.Fragment>
         )
@@ -272,10 +269,6 @@ class FoodRow extends Component {
 
     state = {
         isSelected: false
-    }
-    
-    componentDidUpdate() {
-        
     }
 
     render() {
@@ -297,12 +290,9 @@ class FoodRow extends Component {
     handleClick() {
         const shouldUpdate = this.props.onFoodClicked(this.props.food._id, this.state.isSelected)
         if (shouldUpdate) {
-            console.log('Update Row')
             this.setState(prev => ({
                 isSelected: !this.state.isSelected
             }))
-        } else {
-            console.log('Dont Update Row')
         }
     }
 } 
