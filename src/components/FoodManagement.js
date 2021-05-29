@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import FoodView from './FoodView'
-import { Button, CardDeck, Form, Modal, Table } from "react-bootstrap";
+import { Button, Form, Modal, Table } from "react-bootstrap";
 import axios from '../axios'
 
 export default class FoodManagement extends Component {

@@ -23,7 +23,7 @@ class Header extends Component {
             </Link>
             <Link to="food-management">
               <Button variant="light" className="mr-3">
-                Login
+                Quản lý món ăn
               </Button>
             </Link>
           </Form>
