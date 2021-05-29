@@ -6,11 +6,12 @@ import App from './App';
 import Hello from './Hello'
 import FoodManagement from './components/FoodManagement'
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <FoodManagement />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

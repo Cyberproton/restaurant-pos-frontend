@@ -42,7 +42,7 @@ export default class FoodView extends Component {
                         src={food.image_url}
                     />
                     <Card.Body>
-                        <Card.Text className="text-justify">{food.description}</Card.Text>
+                        <Card.Text className="text-justify">{food.description ? food.description : 'Không có mô tả'}</Card.Text>
                         <Card.Text className="text-center">
                         Price: <b>${food.price}</b>
                         </Card.Text>

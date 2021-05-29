@@ -1,18 +1,23 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
-import axios from './axios'
+import Header from './components/Header';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import FoodManagement from './components/FoodManagement';
 
-function App() {
-  function handleClick() {
-      axios.post('/', { helloMessage: 'Hello from React' })
-      .then(response => alert(response.data.helloMessage), error => alert(error))
+class App extends Component {
+  state = {};
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <Header />
+          <Switch>
+            <Route exact path="/food-management" component={FoodManagement} />
+          </Switch>
+        </div>
+      </Router>
+    );
   }
-
-  return (
-    <div className="App">
-        <button type="button" onClick={handleClick}>Post Hello World</button>
-    </div>
-  );
 }
 
 export default App;

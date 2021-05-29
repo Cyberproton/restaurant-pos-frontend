@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import FoodView from './FoodView'
 import { Button, CardDeck, Form, Modal, Table } from "react-bootstrap";
+import axios from '../axios'
 
 export default class FoodManagement extends Component {
     constructor(props) {
@@ -9,46 +10,37 @@ export default class FoodManagement extends Component {
         this.onFoodClicked = this.onFoodClicked.bind(this)
         this.onAddFoodFormEnable = this.onAddFoodFormEnable.bind(this)
         this.onEditFoodFormOpened = this.onEditFoodFormOpened.bind(this)
+        this.handleInputChange = this.handleInputChange.bind(this)
         this.onDeleteFoodConfirmation = this.onDeleteFoodConfirmation.bind(this)
+        this.handleAddFood = this.handleAddFood.bind(this)
+        this.handleDeleteFood = this.handleDeleteFood.bind(this)
+        this.handleUpdateFood = this.handleUpdateFood.bind(this)
+        this.addFood = this.addFood.bind(this)
+        this.deleteFood = this.deleteFood.bind(this)
+        this.updateFood = this.updateFood.bind(this)
     }
 
     state = {
-        foods: [
-            {
-                _id: 1,
-                imageUrl: '',
-                description: 'dfdfdgsngngimromkbfmkgmkmgkfmgkfmgkmkmfgkmgkfmgkmgfkmg \
-                fgfgfdgdfgdgdfgdfgfdgfdggggggdfgfgfgfgfdgfgf gjfngjnnjnjnjnnjnjminmim',
-                name: "Good food",
-                price: 1000,
-            },
-            {
-                _id: 2,
-                category: 'Test2',
-                name: "Good food 2",
-                imageUrl: '',
-                description: 'dfdfdgsngngimromkbfmkgmkmgkfmgkfmgkmkmfgkmgkfmgkmgfkmg \
-                fgfgfdgdfgdgdfgdfgfdgfdggggggdfgfgfgfgfdgfgf gjfngjnnjnjnjnnjnjminmim',
-                price: 2000,
-            },
-            {
-                _id: 3,
-                category: 'Test2',
-                name: "Good food 2",
-                imageUrl: '',
-                description: 'dfdfdgsngngimromkbfmkgmkmgkfmgkfmgkmkmfgkmgkfmgkmgfkmg \
-                fgfgfdgdfgdgdfgdfgfdgfdggggggdfgfgfgfgfdgfgf gjfngjnnjnjnjnnjnjminmim',
-                price: 2000,
-            }
-        ],
+        foods: [],
         foodSelected: null,
+        foodInForm: {},
         isShowingAddFoodForm: false,
         isShowingEditFoodForm: false,
         isShowingDeleteConfirmation: false
     }
 
-    async componentDidMount() {
-
+    componentDidMount() {
+        axios
+            .get('/api/food')
+            .then((res) => {
+                const foods = res.data.foods
+                this.setState({
+                    foods: foods
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     render() {
@@ -59,7 +51,7 @@ export default class FoodManagement extends Component {
         const deleteConfirmation = this.state.isShowingDeleteConfirmation && food ? this.getFoodDeleteConfirmationModal(food, this.state.isShowingDeleteConfirmation) : <div />
         const foodView = food ? <FoodView key={this.state.foodSelected} food={food} onFoodViewClicked={this.onFoodViewClicked}/> : <div />
         return (
-            <div className="container">
+            <div className="container m-3">
                 {foodView}
                 <h3>🍽 Food List</h3>
                 <FoodList foods={this.state.foods} onFoodClicked={this.onFoodClicked}/>
@@ -79,11 +71,110 @@ export default class FoodManagement extends Component {
     }
 
     async getAllFoods() {
-
+        const res = await axios.get('/api/food/')
+        if (res.status / 100 === 2) {
+            const foods = res.data.foods
+            return foods
+        }
+        return []
     }
 
-    async addFood(food) {
-        
+    addFood(food) {
+        axios
+            .post('/api/food/add', food)
+            .then((res) => {
+                const foods = this.state.foods
+                foods.push(res.data.food)
+                this.setState({
+                    foods: foods,
+                    foodInForm: {}
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    deleteFood(food) {
+        axios
+            .post('/api/food/delete', food)
+            .then((res) => {
+                const foods = this.state.foods.filter(x => x._id != food._id)
+                this.setState({
+                    foods: foods,
+                    foodInForm: {},
+                    foodSelected: null
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    updateFood(food) {
+        axios
+            .post('/api/food/update', food)
+            .then((res) => {
+                const foods = this.state.foods
+                const i = foods.findIndex(x => x._id === food._id)
+                foods[i] = res.data.food
+                console.log(i)
+                this.setState({
+                    foods: foods,
+                    foodInForm: {}
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    handleInputChange(n, e) {
+        const target = e.target
+        const value = target.value
+        const foodInForm = this.state.foodInForm
+        foodInForm[n] = value
+
+        this.setState({
+            foodInForm: foodInForm
+        })
+    }
+
+    handleAddFood(e) {
+        e.preventDefault()
+        if (this.state.foodInForm === {}) {
+            return
+        }
+        this.addFood(this.state.foodInForm)
+    }
+
+    handleUpdateFood(e) {
+        console.log(1)
+        e.preventDefault()
+
+        if (this.state.foodSelected == null) {
+            return
+        }
+
+        const foodSelected = this.state.foodSelected
+        const food = this.state.foodInForm
+        food._id = foodSelected
+        this.updateFood(food)
+
+        this.setState(prev => ({
+            isShowingAddFoodForm: false,
+            isShowingDeleteConfirmation: false,
+            isShowingEditFoodForm: false,
+        }))
+    }
+
+    handleDeleteFood() {
+        if (this.state.foodSelected == null) {
+            return
+        }
+        const foodSelected = this.state.foodSelected
+        const food = this.state.foods.find(x => x._id === foodSelected)
+        this.deleteFood(food)
     }
 
     onFoodViewClicked(foodId, isSelected) {
@@ -133,10 +224,16 @@ export default class FoodManagement extends Component {
         return (
             <div className="container border border-primary">
                 <h5 className="m-3">+ Thêm món ăn</h5>
-                <Form className="m-2">
+                <Form className="m-2" onSubmit={(e) => { this.handleAddFood(e); this.onAddFoodFormEnable() }}>
                     <Form.Group className="mb-3" controlId="formFoodName">
                         <Form.Label>Tên món ăn</Form.Label>
-                        <Form.Control type="text" placeholder="Nhập tên món ăn" />
+                        <Form.Control 
+                            required 
+                            type="text" 
+                            placeholder="Nhập tên món ăn" 
+                            name="name"
+                            onChange={e => this.handleInputChange('name', e)}
+                        />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
@@ -145,11 +242,29 @@ export default class FoodManagement extends Component {
 
                     <Form.Group className="mb-3" controlId="formFoodDescription">
                         <Form.Label>Mô tả món ăn</Form.Label>
-                        <Form.Control as="textarea" rows={3} placeholder="Nhập mô tả món ăn" />
+                        <Form.Control 
+                            as="textarea" 
+                            rows={3} 
+                            placeholder="Nhập mô tả món ăn" 
+                            name="description"
+                            onChange={e => this.handleInputChange('description', e)}
+                        />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formFoodPrice">
+                        <Form.Label>Giá món ăn</Form.Label>
+                        <Form.Control 
+                            required
+                            type="number"
+                            step="0.01"
+                            placeholder="Nhập giá món ăn" 
+                            name="price"
+                            onChange={e => this.handleInputChange('price', e)}
+                        />
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
-                        Xác nhận
+                        Thêm món ăn
                     </Button>
                 </Form>
             </div>
@@ -167,24 +282,52 @@ export default class FoodManagement extends Component {
     getEditFoodForm(food) {
         return (
             <div className="container border border-primary">
-                <h5 className="m-3">= Sửa món ăn</h5>
+                <h5 className="m-3">Sửa món ăn</h5>
                 <Form className="m-2">
-                    <Form.Group className="mb-3" controlId="formFoodName">
+                    <Form.Group 
+                        className="mb-3" 
+                        controlId="formUpdateFoodName"
+                    >
                         <Form.Label>Tên món ăn</Form.Label>
-                        <Form.Control type="text" placeholder="Nhập tên món ăn" defaultValue={food.name}/>
+                        <Form.Control 
+                            required
+                            type="text" 
+                            placeholder="Nhập tên món ăn" 
+                            defaultValue={food.name ? food.name : ''}
+                            onChange={e => this.handleInputChange('name', e)}
+                        />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.File id="formFoodImage" label="Hình ảnh món ăn" />
+                        <Form.File id="formUpdateFoodImage" label="Hình ảnh món ăn" />
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formFoodDescription">
+                    <Form.Group className="mb-3" controlId="formUpdateFoodDescription">
                         <Form.Label>Mô tả món ăn</Form.Label>
-                        <Form.Control as="textarea" rows={3} placeholder="Nhập mô tả món ăn" defaultValue={food.description}/>
+                        <Form.Control 
+                            as="textarea" 
+                            rows={3} 
+                            placeholder="Nhập mô tả món ăn" 
+                            defaultValue={ food.description ? food.description : '' }
+                            onChange={e => this.handleInputChange('description', e)}
+                        />
                     </Form.Group>
 
-                    <Button variant="primary" type="submit">
-                        Submit
+                    <Form.Group className="mb-3" controlId="formUpdateFoodPrice">
+                        <Form.Label>Giá món ăn</Form.Label>
+                        <Form.Control 
+                            required
+                            type="number"
+                            step="0.01"
+                            placeholder="Nhập giá món ăn" 
+                            name="price"
+                            onChange={e => this.handleInputChange('price', e)}
+                            defaultValue={ food.price ? food.price : 0 }
+                        />
+                    </Form.Group>
+
+                    <Button variant="primary" onClick={this.handleUpdateFood}>
+                        Cập nhật
                     </Button>
                 </Form>
             </div>
@@ -221,7 +364,7 @@ export default class FoodManagement extends Component {
                 <Button variant="secondary" onClick={this.onDeleteFoodConfirmation}>
                     Đóng
                 </Button>
-                <Button variant="danger">
+                <Button variant="danger" onClick={() => { this.handleDeleteFood(); this.onDeleteFoodConfirmation() } }>
                     Xóa món ăn
                 </Button>
                 </Modal.Footer>
@@ -273,6 +416,7 @@ class FoodRow extends Component {
 
     render() {
         const food = this.props.food
+        const id = food._id.substring(0, 4) + '...'
         const isSelected = this.state.isSelected
         const checkedColumn = isSelected ? '✓' : ''
         const checkedRow = isSelected ? 'table-dark text-light' : 'table-light text-dark'
@@ -280,7 +424,7 @@ class FoodRow extends Component {
         return (
             <tr className={checkedRow} key={food._id} onClick={() => this.handleClick()}>
                 <td width="10%">{checkedColumn}</td>
-                <td>{food._id}</td>
+                <td>{id}</td>
                 <td>{food.name}</td>
                 <td>{food.price}</td>
             </tr>
