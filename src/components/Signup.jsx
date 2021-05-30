@@ -81,20 +81,15 @@ class Signup extends Component {
 
   render() {
     return (
-      <Container
-        style={{
-          paddingTop: "60px",
-          paddingBottom: "60px",
-        }}
-      >
+      <Container className="login-form">
         <Alert variant="success" onClose={() => this.setLoginSuccessPopup(false)} show={this.state.loginSuccessPopup} dismissible>
-          <p>Đăng ký thành công!</p>
-        </Alert>
-        <Alert variant="danger" onClose={() => this.setState(prev => ({ loginFailurePopup: false }))} show={this.state.loginFailurePopup} dismissible>
-          <p>Đăng ký thất bại!</p>
-          <p>Lý do: {this.state.failureMessage}</p>
-        </Alert>
-        <Card className="login-form" style={{ width: "80%" }}>
+            <p>Đăng ký thành công!</p>
+          </Alert>
+          <Alert variant="danger" onClose={() => this.setState(prev => ({ loginFailurePopup: false }))} show={this.state.loginFailurePopup} dismissible>
+            <p>Đăng ký thất bại!</p>
+            <p>Lý do: {this.state.failureMessage}</p>
+          </Alert>
+        <Card>
           {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
           <Card.Body>
             <Card.Title style={{ textAlign: "center" }}>

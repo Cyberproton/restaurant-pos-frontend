@@ -61,23 +61,11 @@ class Login extends Component {
 
   render() {
     return (
-      <Container
-        style={{
-          paddingTop: "50px",
-          paddingBottom: "50px",
-        }}
-      >
-        <Alert variant="success" onClose={() => this.setLoginSuccessPopup(false)} show={this.state.loginSuccessPopup} dismissible>
-          <p>Đăng nhập thành công!</p>
-        </Alert>
-        <Alert variant="danger" onClose={() => this.setState(prev => ({ loginFailurePopup: false }))} show={this.state.loginFailurePopup} dismissible>
-          <p>Đăng nhập thất bại!</p>
-          <p>Lý do: {this.state.failureMessage}</p>
-        </Alert>
-        <Card className="login-form" style={{ width: "70%" }}>
-          {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+      <Container className="login-form">
+        <Card>
+          {/* <Card.Img variant="top" src=""/> */}
           <Card.Body>
-            <Card.Title style={{ textAlign: "center" }}>ĐĂNG NHẬP</Card.Title>
+          <Card.Title style={{ textAlign: "center" }}>ĐĂNG NHẬP</Card.Title>
             <form onSubmit={this.handleLogin}>
               <div className="form-group mt-3">
                 <label>Tên đăng nhập</label>

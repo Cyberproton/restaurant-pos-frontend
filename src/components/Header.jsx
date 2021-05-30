@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Button, Navbar, Nav, Dropdown } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Button, Navbar, Form , Nav, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { BiCartAlt } from "react-icons/bi";
 import { FaUserCircle } from 'react-icons/fa'
@@ -18,24 +17,14 @@ export default class Header extends Component {
   }
 
   componentDidMount() {
-    const values = cookies.getItem('token_mama')
-    console.log(cookies)
+
   }
 
   handleDropdownToggle() {
-    this.setState(prev => ({
-      isDropdownOpened: !prev.isDropdownOpened
-    }))
+
   }
 
   render() {
-    const dropdown = this.state.isDropdownOpened ? (
-      <Dropdown.Menu show>
-        <Dropdown.Header>Dropdown header</Dropdown.Header>
-        <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-        <Dropdown.Item eventKey="3">Something else here</Dropdown.Item>
-      </Dropdown.Menu>
-    ) : <div/>
     return (
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand className="ms-4" href="/home">Restaurant POS</Navbar.Brand>
