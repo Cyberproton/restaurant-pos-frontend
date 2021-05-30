@@ -51,7 +51,7 @@ export default class FoodManagement extends Component {
         const deleteConfirmation = this.state.isShowingDeleteConfirmation && food ? this.getFoodDeleteConfirmationModal(food, this.state.isShowingDeleteConfirmation) : <div />
         const foodView = food ? <FoodView key={this.state.foodSelected} food={food} onFoodViewClicked={this.onFoodViewClicked}/> : <div />
         return (
-            <div className="container m-3">
+            <div className="container mt-3">
                 {foodView}
                 <h3>🍽 Food List</h3>
                 <FoodList foods={this.state.foods} onFoodClicked={this.onFoodClicked}/>

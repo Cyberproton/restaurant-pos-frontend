@@ -17,7 +17,7 @@ export default class FoodView extends Component {
         const borderColor = isSelected ? 'success' : 'dark'
 
         return (
-            <div onClick={this.handleClick} className="col mb-4">
+            <div onClick={this.handleClick} className="col-auto mb-4">
                 <Card
                     className="text-justify"
                     style={{ height: "100%" }}
