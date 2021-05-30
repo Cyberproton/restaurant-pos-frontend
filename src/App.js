@@ -8,6 +8,9 @@ import {
   Rules,
   FooterSide,
   UserInfo,
+  FoodManagement,
+  FoodMenu,
+  FoodDetail,
 } from "./untils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -28,6 +31,9 @@ class App extends Component {
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/user/:id" component={UserInfo} />
             <Route exact path="/rules" component={Rules} />
+            <Route exact path="/menu" component={FoodMenu} />
+            <Route exact path="/food/:id" component={FoodDetail} />
+            <Route exact path="/manager/foodmanagement" component={FoodManagement} />
           </Switch>
 
           <FooterSide />

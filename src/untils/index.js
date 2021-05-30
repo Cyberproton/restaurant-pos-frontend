@@ -9,6 +9,8 @@ import Login from "../components/Login";
 import Signup from "../components/Signup";
 import Rules from "../components/Rules";
 import UserInfo from "../components/UserInfo";
+import FoodManagement from '../components/FoodManagement'
+import FoodDetail from '../components/FoodDetail'
 
 export {
   Home,
@@ -22,4 +24,6 @@ export {
   Signup,
   Rules,
   UserInfo,
+  FoodManagement,
+  FoodDetail,
 };

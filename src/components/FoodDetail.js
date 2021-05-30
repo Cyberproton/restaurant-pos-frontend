@@ -37,7 +37,7 @@ export default function FoodDetail(props) {
                     </p>
                     <p className="my-3">
                         Đánh giá 
-                        <FaStar className="ms-3"/>
+                        <FaStar className="ml-3"/>
                         <FaStar />
                         <FaStar />
                         <FaStar />
