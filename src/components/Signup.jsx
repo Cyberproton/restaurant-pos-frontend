@@ -150,7 +150,7 @@ class Signup extends Component {
                 <input className="form-control" placeholder="Enter address" onChange={e => this.handleInputChange('address', e)}/>
               </div>
               <div class="d-grid">
-                <button type="submit" className="btn btn-primary btn-block mt-3" disabled={!validateForm()}>
+                <button type="submit" className="btn btn-primary btn-block mt-3" disabled={!this.validateForm()}>
                   Đăng ký
                 </button>
               </div>

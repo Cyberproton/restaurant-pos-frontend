@@ -7,7 +7,7 @@ import {
   Signup,
   Rules,
   FooterSide,
-  // UserInfo,
+  UserInfo,
 } from "./untils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
