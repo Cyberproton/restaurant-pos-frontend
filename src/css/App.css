@@ -1,0 +1,48 @@
+body {
+  color: black;
+}
+a {
+  color: black;
+}
+
+.login-form {
+  margin: 50px auto;
+  padding: 40px 20px;
+  width: 80%;
+  box-shadow: 5px 10px 18px #888888;
+}
+
+.login-form a {
+  color: rgb(0, 119, 255);
+}
+
+.img-carousel {
+  height: 300px;
+}
+
+.caption-carousel {
+  color: black;
+  background-color: blanchedalmond;
+  border-radius: 20px;
+  padding: 20px 30px;
+}
+.user-info-container {
+  margin: 50px auto;
+  padding: 0 50px;
+}
+.user-info-container h1 {
+  text-transform: uppercase;
+  text-align: center;
+  color: coral;
+  margin-bottom: 20px;
+}
+.user-info-container .user-item-info {
+  margin: 20px 0;
+}
+
+.footer-side {
+  bottom: 0;
+  height: 100px;
+  background-color: #ffc107;
+  width: 100%;
+}
