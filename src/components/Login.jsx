@@ -62,6 +62,13 @@ class Login extends Component {
   render() {
     return (
       <Container className="login-form">
+        <Alert variant="success" onClose={() => this.setLoginSuccessPopup(false)} show={this.state.loginSuccessPopup} dismissible>
+          <p>Đăng nhập thành công!</p>
+        </Alert>
+        <Alert variant="danger" onClose={() => this.setState(prev => ({ loginFailurePopup: false }))} show={this.state.loginFailurePopup} dismissible>
+          <p>Đăng nhập thất bại!</p>
+          <p>Lý do: {this.state.failureMessage}</p>
+        </Alert>
         <Card>
           {/* <Card.Img variant="top" src=""/> */}
           <Card.Body>
