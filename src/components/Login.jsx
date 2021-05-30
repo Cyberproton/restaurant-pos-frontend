@@ -5,18 +5,12 @@ import { Link } from "react-router-dom";
 class Login extends Component {
   render() {
     return (
-      <Container
-        style={{
-          backgroundColor: "blue",
-          paddingTop: "50px",
-          paddingBottom: "50px",
-        }}
-      >
-        <Card className="login-form" style={{ width: "70%" }}>
-          {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+      <Container className="login-form">
+        <Card>
+          {/* <Card.Img variant="top" src=""/> */}
           <Card.Body>
             <Card.Title style={{ textAlign: "center" }}>ĐĂNG NHẬP</Card.Title>
-            <form>
+            <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label>Tên đăng nhập</label>
                 <input className="form-control" placeholder="Enter Username" />

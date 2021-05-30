@@ -5,14 +5,8 @@ class Signup extends Component {
   state = {};
   render() {
     return (
-      <Container
-        style={{
-          backgroundColor: "blue",
-          paddingTop: "50px",
-          paddingBottom: "50px",
-        }}
-      >
-        <Card className="login-form" style={{ width: "70%" }}>
+      <Container className="login-form">
+        <Card>
           {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
           <Card.Body>
             <Card.Title style={{ textAlign: "center" }}>
@@ -69,7 +63,10 @@ class Signup extends Component {
                     className="custom-control-label"
                     htmlFor="customCheck1"
                   >
-                    Chấp nhận các điều khoản
+                    Chấp nhận các{" "}
+                    <a href="rules" target="_blank">
+                      điều khoản
+                    </a>
                   </label>
                 </div>
               </div>

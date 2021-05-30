@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Navbar, Form } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 import { BiCartAlt } from "react-icons/bi";
 
