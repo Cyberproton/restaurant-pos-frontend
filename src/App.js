@@ -3,6 +3,8 @@ import './App.css';
 import Header from './components/Header';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import FoodManagement from './components/FoodManagement';
+import FoodMenu from './components/FoodMenu';
+import FoodDetail from './components/FoodDetail';
 
 class App extends Component {
   state = {};
@@ -11,9 +13,13 @@ class App extends Component {
       <Router>
         <div className="App">
           <Header />
-          <Switch>
-            <Route exact path="/food-management" component={FoodManagement} />
-          </Switch>
+          <div className="container">
+            <Switch>
+              <Route exact path="/menu" component={FoodMenu}/>
+              <Route exact path="/food/:id" component={FoodDetail}/>
+              <Route exact path="/food-management" component={FoodManagement} />
+            </Switch>
+          </div>
         </div>
       </Router>
     );
