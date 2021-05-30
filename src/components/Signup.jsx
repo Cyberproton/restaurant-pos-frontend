@@ -134,12 +134,6 @@ class Signup extends Component {
                   placeholder="Enter phone number"
                   onChange={e => this.handleInputChange('phonenumber', e)}
                 />
-                <label className="custom-control-label" htmlFor="customCheck1">
-                  Chấp nhận các{" "}
-                  <a href="rules" target="_blank">
-                    điều khoản
-                  </a>
-                </label>
               </div>
               <div className="form-group mt-3">
                 <label>Ngày sinh</label>
@@ -154,7 +148,9 @@ class Signup extends Component {
                   Đăng ký
                 </button>
               </div>
-              <p className="text-secondary mt-3">Bằng việc nhấn đăng ký, bạn đã chấp nhận mọi điều khoản của chúng tôi</p>
+              <p className="text-secondary mt-3">Bằng việc nhấn đăng ký, bạn đã chấp nhận mọi <a href="rules" target="_blank">
+                    điều khoản
+                  </a> của chúng tôi</p>
             </form>
           </Card.Body>
         </Card>

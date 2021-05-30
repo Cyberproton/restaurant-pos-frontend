@@ -81,9 +81,6 @@ class Login extends Component {
                   placeholder="Enter password"
                   onChange={e => this.handleInputChange('password', e)}
                 />
-                <label className="custom-control-label" htmlFor="customCheck1">
-                  Lưu thông tin đăng nhập
-                </label>
               </div>
               <div className="form-group mt-3">
                 <div className="custom-control custom-checkbox">
@@ -104,7 +101,7 @@ class Login extends Component {
                 <button type="submit" className="btn btn-primary btn-block mt-3">
                   Đăng nhập
                 </button>
-                <Link to="signup" className="btn btn-warning btn-block mt-3">
+                <Link to="signup" className="btn btn-warning btn-block mt-3 text-dark">
                   Đăng ký tài khoản mới
                 </Link>
               </div>
