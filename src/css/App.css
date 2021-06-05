@@ -46,3 +46,7 @@ a {
   background-color: #ffc107;
   width: 100%;
 }
+
+hr.solid {
+  border-top: 3px solid #fff;
+}
