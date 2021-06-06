@@ -11,6 +11,7 @@ import Rules from "../components/Rules";
 import UserInfo from "../components/UserInfo";
 import FoodManagement from '../components/FoodManagement'
 import FoodDetail from '../components/FoodDetail'
+import QrCodeManagement from "../components/QrCodeManagement";
 
 export {
   Home,
@@ -26,4 +27,5 @@ export {
   UserInfo,
   FoodManagement,
   FoodDetail,
+  QrCodeManagement,
 };

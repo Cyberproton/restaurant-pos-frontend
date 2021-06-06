@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Button, Card, CardDeck, Modal, Navbar, Form , Nav, Dropdown, Container, ModalBody, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { BiCartAlt, BiFoodMenu } from "react-icons/bi";
-import { FaUserCircle, FaBook, FaSignOutAlt, FaMoneyCheckAlt } from 'react-icons/fa'
+import { FaUserCircle, FaBook, FaSignOutAlt, FaMoneyCheckAlt, FaQrcode } from 'react-icons/fa'
 import { BsGrid3X3Gap } from 'react-icons/bs'
 import cookies from "js-cookies";
 
@@ -75,11 +75,11 @@ function ExtendendNavigation(props) {
                 <h4><FaBook/></h4>
               </Button>
             </Col>
-            <Col className="m-3 bg-dark" as={Link} to="/manager/foodmanagement" onClick={props.onHide}>
+            <Col className="m-3 bg-dark" as={Link} to="/manager/qrcodemanagement" onClick={props.onHide}>
               <Button variant="dark" block="true">
                 <div className="py-2"/>
-                <p>Quản lý doanh thu</p>
-                <h4><FaBook/></h4>
+                <p>Quản lý mã QR</p>
+                <h4><FaQrcode/></h4>
               </Button>
             </Col>
           </Row>

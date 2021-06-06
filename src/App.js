@@ -11,6 +11,7 @@ import {
   FoodManagement,
   FoodMenu,
   FoodDetail,
+  QrCodeManagement,
 } from "./untils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -34,6 +35,7 @@ class App extends Component {
             <Route exact path="/menu" component={FoodMenu} />
             <Route exact path="/food/:id" component={FoodDetail} />
             <Route exact path="/manager/foodmanagement" component={FoodManagement} />
+            <Route exact path="/manager/qrcodemanagement" component={QrCodeManagement}/>
           </Switch>
 
           <FooterSide />
