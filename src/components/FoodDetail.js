@@ -44,9 +44,9 @@ export default function FoodDetail(props) {
                         <FaStar />
                     </p>
                 </div>
-                <div className="col position-relative">
-                    <div className="position-absolute top-50 end-0 translate-middle-y">
-                        <Button className="me-3" variant="warning">Đặt món</Button>
+                <div className="col  align-self-center align-self-end">
+                    <div className="align-self-center">
+                        <Button className="ml-5" variant="warning">Đặt món</Button>
                     </div>
                 </div>
             </div>

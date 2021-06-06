@@ -53,7 +53,7 @@ export default class FoodManagement extends Component {
         return (
             <div className="container mt-3">
                 {foodView}
-                <h3>🍽 Food List</h3>
+                <h3>🍽 Danh sách món ăn</h3>
                 <FoodList foods={this.state.foods} onFoodClicked={this.onFoodClicked}/>
                 <div className="container px-1">
                     <div className="row gx-1">
@@ -419,7 +419,7 @@ class FoodRow extends Component {
         const id = food._id.substring(0, 4) + '...'
         const isSelected = this.state.isSelected
         const checkedColumn = isSelected ? '✓' : ''
-        const checkedRow = isSelected ? 'table-dark text-light' : 'table-light text-dark'
+        const checkedRow = isSelected ? 'bg-dark text-light' : 'bg-light text-dark'
 
         return (
             <tr className={checkedRow} key={food._id} onClick={() => this.handleClick()}>

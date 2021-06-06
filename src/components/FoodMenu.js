@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Button, Card, CardDeck, Dropdown, DropdownButton } from "react-bootstrap"
+import { Button, Card, CardDeck, Container, Dropdown, DropdownButton } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import axios from '../axios'
 
@@ -35,7 +35,9 @@ function FoodDeck(props) {
         )
     })
     return (
-        <CardDeck className="row justify-content-around mt-3">{foodViews}</CardDeck>
+        <Container>
+            <CardDeck className="row justify-content-around mt-3">{foodViews}</CardDeck>
+        </Container>
     )
 }
 
@@ -102,8 +104,8 @@ class FoodView extends Component {
                     <Card.Text className="justify-content-center">{description}</Card.Text>
                 </Card.Body>
                 <Card.Footer className="bg-light">
-                    <div class="d-grid">
-                        <Button variant="warning">Đặt món</Button>
+                    <div className="d-grid">
+                        <Button variant="warning" block>Đặt món</Button>
                     </div>
                 </Card.Footer>
             </Card>
