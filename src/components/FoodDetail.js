@@ -1,12 +1,13 @@
 import React, { Component, useState, useEffect } from "react"
-import  { Button, Image } from 'react-bootstrap'
-import { FaStar } from "react-icons/fa"
+import  { Col, Container, Button, Form, Image, Row } from 'react-bootstrap'
+import { FaStar, FaArrowUp, FaArrowDown } from "react-icons/fa"
 import { useParams } from "react-router-dom"
 import axios from '../axios'
 
 export default function FoodDetail(props) {
     const { id } = useParams()
     const [ food, setFood ] = useState(null)
+    const [ quantity, setQuantity ] = useState(1)
 
     useEffect(() => {
         axios
@@ -16,8 +17,6 @@ export default function FoodDetail(props) {
             })
             .catch(err => console.log(err))
     }, [id])
-
-    console.log(food)
 
     const render = food ? (
         <div className="container my-3">
@@ -29,27 +28,39 @@ export default function FoodDetail(props) {
                 }}
                 src={process.env.PUBLIC_URL + '/image_not_found.png'} fluid
             />
-            <div className="row">
-                <div className="col">
-                    <h3 className="my-2">{food.name}</h3>
-                    <p className="my-3">
-                        Giá: <b>{food.price + 'đ'}</b>
-                    </p>
-                    <p className="my-3">
-                        Đánh giá 
-                        <FaStar className="ml-3"/>
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                    </p>
-                </div>
-                <div className="col  align-self-center align-self-end">
-                    <div className="align-self-center">
-                        <Button className="ml-5" variant="warning">Đặt món</Button>
-                    </div>
-                </div>
-            </div>
+            <Container>
+                <Row className="my-2 justify-content-center">
+                    <h3>{food.name}</h3>
+                </Row>
+                <Row>
+                    <Col>
+                        <Row className="d-flex my-2 ml-1">
+                            <p className="align-self-center">
+                                Đánh giá 
+                                <FaStar className="ml-3"/>
+                                <FaStar />
+                                <FaStar />
+                                <FaStar />
+                                <FaStar />
+                            </p>
+                        </Row>
+                        <Row className="my-2 ml-1 d-flex">
+                            <p className="align-self-center">Giá: <b>{food.price + 'đ'}</b></p>
+                        </Row>
+                        <Row className="d-flex my-2 ml-1 align-items-center">
+                            <span className="align-middle">Số lượng:</span>
+                            <Form inline="true">
+                                <Button variant="outline-secondary" size="sm"><FaArrowUp/></Button>
+                                <Form.Control type="number" defaultValue="1"/>
+                                <Button variant="outline-secondary" size="sm"><FaArrowDown/></Button>
+                            </Form>
+                        </Row>
+                    </Col>
+                    <Col className="d-flex justify-content-end">
+                        <Button className="align-self-center" variant="warning">Đặt món</Button>
+                    </Col>
+                </Row>
+            </Container>
             <hr/>
             <div>
                 <h4 className="my-4">Miêu tả món ăn</h4>
