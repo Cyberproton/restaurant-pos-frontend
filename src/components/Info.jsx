@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "../axios";
 
 class UserInfo extends Component {
@@ -14,6 +14,7 @@ class UserInfo extends Component {
     this.setState({
       islogout: true,
     });
+    this.props.checkLogin();
   };
 
   UNSAFE_componentWillMount() {
@@ -22,16 +23,19 @@ class UserInfo extends Component {
 
   getInfo = async () => {
     const token = localStorage.getItem("token");
-    const res = await axios.get(`/api/user`, {
+    const res = await axios.get(`/api/admin`, {
       headers: { token: token },
     });
     this.setState({
       user: {
         username: res.data.username,
+        password: res.data.password,
         fullname: res.data.fullname,
         phonenumber: res.data.phonenumber,
-        birthday: res.data.birthday,
-        address: res.data.address,
+        role: res.data.role,
+        dateofbirth: res.data.dateofbirth,
+        mailaddress: res.data.mailaddress,
+        salary: res.data.salary,
       },
     });
   };
@@ -40,7 +44,7 @@ class UserInfo extends Component {
     event.preventDefault();
     const token = localStorage.getItem("token");
     axios
-      .delete(`/api/user`, {
+      .delete(`/api/admin`, {
         headers: { token: token },
       })
       .then((res) => {
@@ -53,10 +57,10 @@ class UserInfo extends Component {
 
   render() {
     if (this.state.islogout) {
-      return <Redirect to="/" />;
+      return <Redirect to="/login" />;
     }
     return (
-      <Container className="user-info-container">
+      <Container className="user-info-container margin-side">
         <h1>Tran Long An</h1>
         <Row className="user-item-info">
           <Col>Tên đăng nhập :</Col>
@@ -79,29 +83,30 @@ class UserInfo extends Component {
         <Row className="user-item-info">
           <Col>Ngày sinh :</Col>
           <Col>
-            <input disabled placeholder={this.state.user.birthday} />
+            <input disabled placeholder={this.state.user.dateofbirth} />
           </Col>
         </Row>
         <Row className="user-item-info">
-          <Col>Địa chỉ :</Col>
+          <Col>Địa chỉ email :</Col>
           <Col>
-            <input disabled placeholder={this.state.user.address} />
+            <input disabled placeholder={this.state.user.mailaddress} />
           </Col>
         </Row>
-        <div vertical className="user-button d-flex flex-column">
-          <Button className="btn btn-warning">Lịch sử giao dịch</Button>
-          <Button className="btn btn-primary">
-            <Link to="/setinfo">Cập nhật thông tin</Link>
-          </Button>
-          <Button className="btn btn-danger" onClick={this.handleLogout}>
-            Đăng xuất
-          </Button>
-        </div>
-        <Button
-          className="btn btn-danger delete-button-account"
-          onClick={this.deleteAccount}
-        >
-          Xoá bỏ tài khoản
+        <Row className="user-item-info">
+          <Col>Quyền :</Col>
+          <Col>
+            <input disabled placeholder={this.state.user.role} />
+          </Col>
+        </Row>
+        <Row className="user-item-info">
+          <Col>Mức lương :</Col>
+          <Col>
+            <input disabled placeholder={this.state.user.salary} />
+          </Col>
+        </Row>
+
+        <Button className="btn btn-danger" onClick={this.handleLogout}>
+          Đăng xuất
         </Button>
       </Container>
     );

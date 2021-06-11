@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import {
-  Header,
   Home,
-  Cart,
+  FoodManager,
+  QRManager,
+  AccountManager,
+  OrderManager,
+  BillManager,
+  Header,
   Login,
-  Register,
-  Rules,
-  FooterSide,
-  UserInfo,
-  SetUserInfo,
+  Info,
 } from "./untils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,77 +16,46 @@ import "./css/App.css";
 
 class App extends Component {
   state = {
-    cart: [],
-    numberOfCart: 0,
+    isLogin: false,
   };
 
-  incAmount = (id, n) => {
-    let newcart = this.state.cart;
-    for (let i = 0; i < newcart.length; i++) {
-      if (newcart[i].id === id) {
-        if (newcart[i].amount === 1 && n === -1) {
-          newcart.splice(i, 1);
-          break;
-        }
-        newcart[i].amount += n;
-        break;
-      }
-    }
-    this.setState({ numberOfCart: this.state.numberOfCart + n, cart: newcart });
-  };
+  UNSAFE_componentWillMount() {
+    this.checkLogin();
+  }
 
-  handleInc = (item) => {
-    let amount = 1;
-    let cart = this.state.cart;
-    if (item) {
-      amount = item.amount;
-      cart.push(item);
-    }
-    this.setState({
-      numberOfCart: this.state.numberOfCart + amount,
-      cart: cart,
-    });
-  };
-
-  handleClear = () => {
-    this.setState({
-      cart: [],
-      numberOfCart: 0,
-    });
+  checkLogin = async () => {
+    if (localStorage.getItem("token") !== null)
+      this.setState({ isLogin: true });
+    else this.setState({ isLogin: false });
   };
 
   render() {
     return (
       <Router>
-        <div className="App">
-          <Header count={this.state.numberOfCart} />
-          <Switch>
-            <Route
-              exact
-              path="/cart"
-              render={() => (
-                <Cart
-                  count={this.state.numberOfCart}
-                  cart={this.state.cart}
-                  onInc={this.handleInc}
-                  onincAmount={this.incAmount}
-                  onClear={this.handleClear}
-                />
-              )}
-            />
-            <Route exact path="/login" component={Login} />
-            <Route
-              exact
-              path="/"
-              render={() => <Home onInc={this.handleInc} />}
-            />
-            <Route exact path="/Register" component={Register} />
-            <Route exact path="/user" component={UserInfo} />
-            <Route exact path="/rules" component={Rules} />
-            <Route exact path="/setinfo" component={SetUserInfo} />
-          </Switch>
-          <FooterSide />
-        </div>
+        <Header isLogin={this.state.isLogin} />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/food" component={FoodManager} />
+          <Route exact path="/account" component={AccountManager} />
+          <Route exact path="/qr" component={QRManager} />
+          <Route exact path="/order" component={OrderManager} />
+          <Route exact path="/bill" component={BillManager} />
+          <Route
+            exact
+            path="/login"
+            render={() => (
+              <Login
+                checkLogin={this.checkLogin}
+                isLogin={this.state.isLogin}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/info"
+            render={() => <Info checkLogin={this.checkLogin} />}
+          />
+        </Switch>
       </Router>
     );
   }

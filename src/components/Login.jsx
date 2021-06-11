@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { Card, Container } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "../axios";
 
 class Login extends Component {
   state = {
-    isLogin: false,
     username: "",
     password: "",
   };
@@ -25,15 +24,13 @@ class Login extends Component {
     else if (password.length === 0) alert("Bạn phải nhập mật khẩu!");
     else {
       axios
-        .post(`/api/user/login`, {
+        .post(`/api/admin/login`, {
           username,
           password,
         })
         .then((res) => {
           localStorage.setItem("token", res.data);
-          this.setState({
-            isLogin: true,
-          });
+          this.props.checkLogin();
         })
         .catch((error) => {
           alert("Tên đăng nhập hoặc mật khẩu không chính xác!");
@@ -42,12 +39,10 @@ class Login extends Component {
   };
 
   render() {
-    if (this.state.isLogin) {
-      return <Redirect to="/" />;
-    }
+    if (this.props.isLogin) return <Redirect to="/" />;
     return (
       <Container className="login-form">
-        <Card>
+        <Card className="login-card">
           <Card.Body>
             <Card.Title style={{ textAlign: "center" }}>ĐĂNG NHẬP</Card.Title>
             <form onSubmit={this.handleSubmit}>
@@ -72,21 +67,6 @@ class Login extends Component {
                   onChange={this.handleInputChange}
                 />
               </div>
-              {/* <div className="form-group mt-3">
-                <div className="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input me-2"
-                    id="customCheck1"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="customCheck1"
-                  >
-                    Lưu thông tin đăng nhập
-                  </label>
-                </div>
-              </div> */}
               <div className="d-grid">
                 <button
                   type="submit"
@@ -94,12 +74,6 @@ class Login extends Component {
                 >
                   Đăng nhập
                 </button>
-                <Link
-                  to="register"
-                  className="btn btn-warning btn-block mt-3 text-dark"
-                >
-                  Đăng ký tài khoản mới
-                </Link>
               </div>
             </form>
           </Card.Body>

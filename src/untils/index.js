@@ -1,23 +1,23 @@
-import Home from "../pages/Home";
-import Cart from "../pages/Cart";
-import FooterSide from "../components/FooterSide";
+import Home from "../components/Home";
+import FoodManager from "../components/FoodManager";
+import QRManager from "../components/QRManager";
+import AccountManager from "../components/AccountManager";
+import BillManager from "../components/BillManager";
+import OrderManager from "../components/OrderManager";
 import Header from "../components/Header";
-import Introduce from "../components/Introduce";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import Rules from "../pages/Rules";
-import UserInfo from "../pages/UserInfo";
-import SetUserInfo from "../pages/SetUserInfo";
+import Login from "../components/Login";
+import Info from "../components/Info";
+import NavbarSide from "../components/NavbarSide";
 
 export {
   Home,
-  Cart,
-  FooterSide,
+  FoodManager,
+  QRManager,
+  AccountManager,
+  OrderManager,
+  BillManager,
   Header,
-  Introduce,
   Login,
-  Register,
-  Rules,
-  UserInfo,
-  SetUserInfo,
+  Info,
+  NavbarSide,
 };
