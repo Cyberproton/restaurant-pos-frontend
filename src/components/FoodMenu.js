@@ -36,7 +36,7 @@ function FoodDeck(props) {
     })
     return (
         <Container>
-            <CardDeck className="row justify-content-around mt-3">{foodViews}</CardDeck>
+            <CardDeck className="row row-cols-2 mt-3">{foodViews}</CardDeck>
         </Container>
     )
 }
@@ -75,11 +75,11 @@ class FoodView extends Component {
             <Card
                 as={Link}
                 to={`food/${food._id}`}
-                style={{ width: "12rem", textDecoration: 'none' }}
+                style={{ width: "50%", textDecoration: 'none' }}
                 bg={bgcolor}
                 text={textColor}
                 border={borderColor}
-                className="mb-3"
+                className="col mb-3"
             >
                 <Card.Header 
                     as="h5"
@@ -94,8 +94,8 @@ class FoodView extends Component {
                         objectFit: "cover",
                         width: "100%",
                     }}
-                    src={this.state.imageError ? process.env.PUBLIC_URL + '/image_not_found.png' : food.image_url}
-                    onError={this.handleImageError}
+                    src={food.imageUrl}
+                    onError={e => { e.target.onerror = null; e.target.src = process.env.PUBLIC_URL + '/image_not_found.png' } }
                 />
                 <Card.Body>
                     <Card.Text>
@@ -105,7 +105,7 @@ class FoodView extends Component {
                 </Card.Body>
                 <Card.Footer className="bg-light">
                     <div className="d-grid">
-                        <Button variant="warning" block>Đặt món</Button>
+                        <Button variant="warning" block>Xem ngay</Button>
                     </div>
                 </Card.Footer>
             </Card>

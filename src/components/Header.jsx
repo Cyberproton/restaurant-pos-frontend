@@ -46,7 +46,7 @@ export default class Header extends Component {
               <Link to="/menu" className="text-light ml-3">
                 Menu
               </Link>
-              <Link to="/login">
+              <Link to="/user">
                 <FaUserCircle className="text-light ml-3"/>
               </Link>
               <BsGrid3X3Gap className="text-light ml-3" onClick={this.handleExtendedNavigationToggle}/>

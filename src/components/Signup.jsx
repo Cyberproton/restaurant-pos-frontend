@@ -1,6 +1,10 @@
 import React, { Component, useState } from "react";
 import { Alert, Card, Container, Toast, ToastHeader } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import axios from '../axios'
+import { checkLogin, getDate, formatDate } from "../untils/functions";
 
 class Signup extends Component {
   constructor(props) {
@@ -14,7 +18,8 @@ class Signup extends Component {
     user: {},
     loginSuccessPopup: false,
     loginFailurePopup: false,
-    failureMessage: ''
+    failureMessage: '',
+    isLoggedIn: false,
   };
 
   handleInputChange(name, e) {
@@ -28,39 +33,130 @@ class Signup extends Component {
     }))
   }
 
-  validateForm() {
-    // Validate input
-    return this.state.user.username && this.state.user.username.length > 0 && this.state.user.password && this.state.user.password.length > 0;
+  dateInputChange(date) {
+    const user = this.state.user;
+    user.birthday = formatDate(date);
+
+    this.setState({
+      user: user
+    });
+  }
+
+  clearPasswordInputs() {
+    document.getElementById("register-password-input").value = "";
+    document.getElementById("register-repassword-input").value = "";
   }
 
   handleSignup(e) {
     e.preventDefault()
-    console.log(this.state.user)
+    
+    if (checkLogin()) {
+      this.setState({
+        isLoggedIn: true
+      });
+    }
+
+    const user = this.state.user;
+    const body = {};
+    const username = user.username;
+    const password = user.password;
+    const repassword = user.repassword;
+
+    if (!username || !username.match("[A-Za-z0-9]{6,}")) {
+      if (password) {
+        delete user.password;
+      }
+      if (repassword) {
+        delete user.repassword;
+      }
+      this.setState({
+        loginFailurePopup: true,
+        failureMessage: "Tên đăng nhập không hợp lệ",
+        user: user,
+      });
+      this.clearPasswordInputs();
+      return;
+    }
+
+    if (!password || !password.match(".{6,}")) {
+      if (password) {
+        delete user.password;
+      }
+      if (repassword) {
+        delete user.repassword;
+      }
+      this.setState({
+        loginFailurePopup: true,
+        failureMessage: "Mật khẩu không hợp lệ",
+        user: user,
+      });
+      this.clearPasswordInputs();
+      return;
+    }
+
+    if (password !== repassword) {
+      if (password) {
+        delete user.password;
+      }
+      if (repassword) {
+        delete user.repassword;
+      }
+      this.setState({
+        loginFailurePopup: true,
+        failureMessage: "Mật khẩu và nhập lại mật khẩu không trùng nhau",
+        user: user,
+      });
+      this.clearPasswordInputs();
+      return;
+    }
+
+    const fullname = this.state.user.fullname;
+    if (fullname && fullname.trim()) {
+      body.fullname = fullname;
+    }
+    const phonenumber = this.state.user.phonenumber;
+    if (phonenumber && phonenumber.trim()) {
+      body.phonenumber = phonenumber;
+    }
+    const birthday = this.state.user.birthday;
+    if (birthday && birthday.trim()) {
+      body.birthday = birthday;
+    }
+    const address = this.state.user.address;
+    if (address && address.trim()) {
+      body.address = address;
+    }
+
+    body.username = username;
+    body.password = password;
+    body.repassword = repassword;
+
     axios
-      .post('/api/user/register', this.state.user)
+      .post('/api/user/register', body)
       .then(res => {
-        if (res.status / 200 === 1) {
-          this.setState(prev => ({
-            loginSuccessPopup: true,
-            user: {}
-          }))
-        } 
-        else {
-        }
+        this.setState(prev => ({
+          loginSuccessPopup: true,
+          user: {}
+        }));
+        this.clearPasswordInputs();
       })
       .catch(err => {
         let failureMessage = ''
-          if (err.response.status / 400 === 1) {
-            failureMessage = 'Tên đăng nhập đã tồn tại'
-          } else {
-            failureMessage = 'Lỗi hệ thống'
-          }
+        if (!err.response) {
+          failureMessage = 'Lỗi hệ thống'
+        } else if (err.response.message && err.response.message.includes("Username already")) {
+          failureMessage = 'Tên đăng nhập đã tồn tại'
+        } else {
+          failureMessage = err.response.message;
+        }
 
-          this.setState(prev => ({
-            loginFailurePopup: true,
-            failureMessage: failureMessage,
-            user: {}
-          }))
+        this.setState(prev => ({
+          loginFailurePopup: true,
+          failureMessage: failureMessage,
+          user: {}
+        }));
+
+        this.clearPasswordInputs();
       })
   }
 
@@ -70,21 +166,13 @@ class Signup extends Component {
     }))
   }
 
-  /*
-  <div className="form-group mt-3">
-                <label>Nhập lại mật khẩu (*)</label>
-                <input
-                  required
-                  type="password"
-                  className="form-control"
-                  placeholder="Enter re-password"
-                  onChange={e => this.handleInputChange('repassword', e)}
-                  pattern=".{6,}"
-                />
-              </div>
-  */
-
   render() {
+    if (checkLogin()) {
+      return <Redirect to="/user"/>
+    }
+
+    const user = this.state.user;
+
     return (
       <Container className="login-form">
         <Alert variant="success" onClose={() => this.setLoginSuccessPopup(false)} show={this.state.loginSuccessPopup} dismissible>
@@ -103,7 +191,10 @@ class Signup extends Component {
             <form onSubmit={this.handleSignup}>
               <div className="form-group mt-3">
                 <label>Tên đăng nhập (*)</label>
-                <input required className="form-control" placeholder="Enter Username" pattern="[A-Za-z0-9]{6,}" onChange={e => this.handleInputChange('username', e)}/>
+                <input 
+                  className="form-control" 
+                  placeholder="Nhập tên đăng nhập" 
+                  onChange={e => this.handleInputChange('username', e)}/>
               </div>
               <div className="mt-2 ms-1 text-secondary" >
                 * Ký tự phải là A-Z, a-z hoặc chữ số<br/>
@@ -112,12 +203,21 @@ class Signup extends Component {
               <div className="form-group mt-3">
                 <label>Mật khẩu (*)</label>
                 <input
-                  required
+                  id="register-password-input"
                   type="password"
                   className="form-control"
                   placeholder="Enter password"
                   onChange={e => this.handleInputChange('password', e)}
-                  pattern=".{6,}"
+                />
+              </div>
+              <div className="form-group mt-3">
+                <label>Nhập lại mật khẩu (*)</label>
+                <input
+                  id="register-repassword-input"
+                  type="password"
+                  className="form-control"
+                  placeholder="Enter password"
+                  onChange={e => this.handleInputChange('repassword', e)}
                 />
               </div>
               <div className="mt-2 ms-1">
@@ -137,14 +237,23 @@ class Signup extends Component {
               </div>
               <div className="form-group mt-3">
                 <label>Ngày sinh</label>
-                <input className="form-control" placeholder="Enter birthday" onChange={e => this.handleInputChange('dateofbirth', e)}/>
+                <ReactDatePicker 
+                  selected={getDate(user.birthday)} 
+                  onChange={(date) => this.dateInputChange(date)}
+                  maxDate={new Date()}
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  dateFormat="dd/MM/yyyy"
+                  placeholderText="Chọn ngày sinh"
+                />
               </div>
               <div className="form-group mt-3">
                 <label>Địa chỉ</label>
                 <input className="form-control" placeholder="Enter address" onChange={e => this.handleInputChange('address', e)}/>
               </div>
               <div class="d-grid">
-                <button type="submit" className="btn btn-primary btn-block mt-3" disabled={!this.validateForm()}>
+                <button type="submit" className="btn btn-primary btn-block mt-3">
                   Đăng ký
                 </button>
               </div>
