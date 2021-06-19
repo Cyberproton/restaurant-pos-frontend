@@ -124,11 +124,11 @@ class Login extends Component {
                   onChange={e => this.handleInputChange('password', e)}
                 />
               </div>
-              <div class="d-grid">
+              <div className="d-grid">
                 <button type="submit" className="btn btn-primary btn-block mt-3">
                   Đăng nhập
                 </button>
-                <Link to="signup" className="btn btn-warning btn-block mt-3 text-dark">
+                <Link to="register" className="btn btn-warning btn-block mt-3 text-dark">
                   Đăng ký tài khoản mới
                 </Link>
               </div>

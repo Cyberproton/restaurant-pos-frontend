@@ -1,17 +1,18 @@
-import Home from "../components/Home";
+import Home from "../pages/Home";
 import CardFood from "../components/CardFood";
-import FoodMenu from "../components/FoodMenu";
+import FoodMenu from "../pages/FoodMenu";
 import Cart from "../components/Cart";
 import FooterSide from "../components/FooterSide";
 import Header from "../components/Header";
 import Introduce from "../components/Introduce";
-import Login from "../components/Login";
-import Signup from "../components/Signup";
-import Rules from "../components/Rules";
-import UserInfo from "../components/UserInfo";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+import Rules from "../pages/Rules";
+import UserInfo from "../pages/UserInfo";
 import FoodManagement from '../components/FoodManagement'
-import FoodDetail from '../components/FoodDetail'
+import FoodDetail from '../pages/FoodDetail'
 import QrCodeManagement from "../components/QrCodeManagement";
+import NotFound404 from "../pages/NotFound404";
 
 export {
   Home,
@@ -22,10 +23,11 @@ export {
   Header,
   Introduce,
   Login,
-  Signup,
+  Register,
   Rules,
   UserInfo,
   FoodManagement,
   FoodDetail,
   QrCodeManagement,
+  NotFound404,
 };

@@ -1,12 +1,21 @@
 import React, { Component } from "react"
-import { Button, Card, CardDeck, Container, Dropdown, DropdownButton } from "react-bootstrap"
+import { Button, Card, CardDeck, Container, Dropdown, DropdownButton, Row } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import axios from '../axios'
+import Search from "../components/Search"
+import SearchBar from "../components/SearchBar"
+import { replaceLatinDiacritics } from "../untils/functions"
 
 export default class FoodMenu extends Component {
-    state = {
-        foods: []
+    constructor(props) {
+        super(props);
+        this.onFoodSearch = this.onFoodSearch.bind(this);
     }
+
+    state = {
+        foods: [],
+        foodSearch: ""
+    };
 
     componentDidMount() {
         axios
@@ -19,11 +28,34 @@ export default class FoodMenu extends Component {
             })
             .catch((err) => {
                 console.log(err)
-            })
+            });
+    }
+
+    onFoodSearch(event) {
+        let s = event.target.value;
+        if (s) {
+            s = s.trim();
+        }
+        this.setState({
+            foodSearch: s
+        });
     }
 
     render() {
-        return <FoodDeck foods={this.state.foods}/>
+        const foodSearch = replaceLatinDiacritics(this.state.foodSearch.toLowerCase());
+        console.log(foodSearch);
+        const foodViews = this.state.foods.filter(food => replaceLatinDiacritics(food.name.toLowerCase()).includes(foodSearch)).map((food, index) => {
+            return (
+                <FoodView className="col-auto m-1" key={index} food={food} />
+            );
+        });
+
+        return (
+            <Container>
+                <SearchBar onChange={this.onFoodSearch}/>
+                <Row className="row row-cols-2 mt-3">{foodViews}</Row>
+            </Container>
+        );
     }
 }
 
@@ -36,7 +68,8 @@ function FoodDeck(props) {
     })
     return (
         <Container>
-            <CardDeck className="row row-cols-2 mt-3">{foodViews}</CardDeck>
+            <SearchBar />
+            <Row className="row row-cols-2 mt-3">{foodViews}</Row>
         </Container>
     )
 }
@@ -62,7 +95,7 @@ class FoodView extends Component {
     render() {
         const isSelected = this.state.isSelected
         const food = this.props.food
-        const bgcolor = isSelected? 'success' : 'light'
+        const bgcolor = isSelected ? 'success' : 'light'
         const textColor = isSelected ? 'light' : 'dark'
         const borderColor = isSelected ? 'success' : ''
 
@@ -81,7 +114,7 @@ class FoodView extends Component {
                 border={borderColor}
                 className="col mb-3"
             >
-                <Card.Header 
+                <Card.Header
                     as="h5"
                     className="text-center bg-light text-dark"
                 >
@@ -95,7 +128,7 @@ class FoodView extends Component {
                         width: "100%",
                     }}
                     src={food.imageUrl}
-                    onError={e => { e.target.onerror = null; e.target.src = process.env.PUBLIC_URL + '/image_not_found.png' } }
+                    onError={e => { e.target.onerror = null; e.target.src = process.env.PUBLIC_URL + '/image_not_found.png' }}
                 />
                 <Card.Body>
                     <Card.Text>

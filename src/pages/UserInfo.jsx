@@ -85,20 +85,20 @@ class UserInfo extends Component {
     const userForm = this.state.userForm;
     const body = {};
     const fullname = userForm.fullname;
-    if (fullname && fullname.trim()) {
-      body.fullname = fullname;
+    if (fullname != null) {
+      body.fullname = fullname.trim();
     }
     const phonenumber = userForm.phonenumber;
-    if (phonenumber && phonenumber.trim()) {
-      body.phonenumber = phonenumber;
+    if (phonenumber != null) {
+      body.phonenumber = phonenumber.trim();
     }
     const birthday = userForm.birthday;
-    if (birthday && birthday.trim()) {
-      body.birthday = birthday;
+    if (birthday != null) {
+      body.birthday = birthday.trim();
     }
     const address = userForm.address;
-    if (address && address.trim()) {
-      body.address = address;
+    if (address != null) {
+      body.address = address.trim();
     }
 
     axios
@@ -438,7 +438,8 @@ class UserInfo extends Component {
             <Col>
               <input 
                 id="phonenumber-input"
-                value={user.phonenumber} 
+                defaultValue={user.phonenumber} 
+                type="number"
                 onChange={(e) => this.inputChange(e, "phonenumber")}
                 disabled={!this.state.isEditingProfile}/>
             </Col>

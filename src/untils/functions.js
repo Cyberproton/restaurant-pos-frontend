@@ -34,4 +34,8 @@ function getDate(date, split = "/") {
     }
 }
 
-export { getCookie, checkLogin, formatDate, getDate }
+function replaceLatinDiacritics(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+export { getCookie, checkLogin, formatDate, getDate, replaceLatinDiacritics }

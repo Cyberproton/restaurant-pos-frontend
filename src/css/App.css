@@ -22,7 +22,7 @@ a {
 
 .caption-carousel {
   color: black;
-  background-color: blanchedalmond;
+  background-color: rgba(255, 255, 255, 0.87);
   border-radius: 20px;
   padding: 20px 30px;
 }
@@ -41,12 +41,42 @@ a {
 }
 
 .footer-side {
+  margin-top: 10px;
+  box-sizing: content-box;
+  background-color: #212529;
+  color: white;
   bottom: 0;
-  height: 100px;
-  background-color: #ffc107;
-  width: 100%;
+  left: 0;
+  padding: 20px 10px 0 0;
+  height: auto;
+}
+.footer-side h2 {
+  text-align: center;
+  text-shadow: 1px 1px 2px black, 0 0 1em rgb(229, 255, 0),
+    0 0 0.2em rgb(100, 109, 20);
+  color: white;
+  font-size: 30px;
+}
+.footer-side ul {
+  list-style: none;
+}
+.footer-side .icon {
+  background-color: rgb(207, 132, 20);
+  text-align: center;
+}
+.footer-side .icon-item {
+  font-size: 17pt;
+  margin: 10px 30px;
 }
 
 hr.solid {
   border-top: 3px solid #fff;
+}
+
+.search-side {
+  background-color: rgb(255, 235, 213);
+  padding: 30px 30px 30px 30px;
+}
+.search-side h5 {
+  margin-top: 10px;
 }

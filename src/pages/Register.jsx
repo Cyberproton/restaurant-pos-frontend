@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from '../axios'
 import { checkLogin, getDate, formatDate } from "../untils/functions";
 
-class Signup extends Component {
+class Register extends Component {
   constructor(props) {
     super(props)
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -279,4 +279,4 @@ function Success(props) {
   );
 }
 
-export default Signup;
+export default Register;

@@ -57,7 +57,7 @@ export default function FoodDetail(props) {
     )
 
     const render = food ? (
-        <div className="container my-3">
+        <div className="container my-3 py-3">
             <Container>
                 {toast}
             </Container>
@@ -119,14 +119,14 @@ export default function FoodDetail(props) {
                 </Row>
             </Container>
             <hr/>
-            <div>
+            <div className="container my-4">
                 <h4 className="my-4">Miêu tả món ăn</h4>
                 <p className="my-3">
                     {food.description}
                 </p>
             </div>
             <hr/>
-            <div>
+            <div className="container my-4">
                 <h4 className="my-4">Đánh giá món ăn</h4>
                 <p className="my-3">
                     Chưa có đánh giá

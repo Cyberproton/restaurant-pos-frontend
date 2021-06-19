@@ -1,52 +1,68 @@
 import React, { Component } from "react";
-import { Col, Row, Jumbotron, Container } from "react-bootstrap";
+import {
+  AiFillFacebook,
+  AiFillInstagram,
+  AiFillYoutube,
+  AiOutlineTwitter,
+} from "react-icons/ai";
+import { Button, Container, Row, Col, Footer } from "react-bootstrap";
+
 
 class FooterSide extends Component {
-  state = {};
   render() {
-    return (
-      <Jumbotron className="text-left text-light bg-dark mb-0 mt-5 font-footer p-4">
-        <Container>
-          <Row>
-            <Col xs={7} sm={8} className="border-right">
-              <p className="text-uppercase">LOCATIONS</p>
-              <Row className="text-capitalize">
-                <Col lg={3}>
-                  <p>
-                    Brooklyn 376 Fake Street Brooklyn, NY — 11231 (718) 555-1234
-                  </p>
-                </Col>
-                <Col lg={3}>
-                  <p>
-                    Queens 47-33 Fake Street Long Island City, NY — 11101 (347)
-                    555-1234
-                  </p>
-                </Col>
-                <Col lg={3}>
-                  <p>
-                    Food Truck 25 Fake Street New York, NY — 10003 (917)
-                    555-1234
-                  </p>
-                </Col>
-              </Row>
-            </Col>
-            <Col>
-              <Col>
-                <p className="text-uppercase">Hours</p>
-                <p>
-                  Monday — Thursday
-                  <p>8am — 11pm </p>
-                </p>
+    const iconStyle = {
+      color: "white",
+      fontSize: "17pt",
+    };
 
-                <p>
-                  Friday — Sunday
-                  <p>11am — 11pm</p>
-                </p>
-              </Col>
-            </Col>
-          </Row>
+    return (
+      <footer className="container-fluid text-light p-0" style={{ backgroundColor: "#212529" }}>
+        <hr />
+        <Container className="d-flex justify-content-center mt-3">
+          <h3 style={{ 
+            textShadow: "1px 1px 2px black, 0 0 1em rgb(229, 255, 0), 0 0 0.2em rgb(100, 109, 20)",
+            color: "white",
+           }}>
+             POS System - Restaurant
+          </h3>
         </Container>
-      </Jumbotron>
+        <hr />
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col p-0">
+              <ul style={{ listStyle: "none" }} className="px-4">
+                <li>Bach Khoa Univesity</li>
+                <li>Oppen from 8am to 17pm </li>
+                <li>Oppen from 8am to 17pm </li>
+              </ul>
+            </div>
+            <div className="col p-0">
+              <ul style={{ listStyle: "none" }} className="px-4">
+                <li>Bach Khoa Univesity</li>
+                <li>Oppen from 8am to 17pm </li>
+                <li>Oppen from 8am to 17pm </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div className="container-fluid text-dark" style={{ backgroundColor: "rgb(207, 132, 20)" }}>
+          <div className="row p-2">
+            <div className="col d-flex justify-content-center" style={iconStyle}>
+              <AiFillFacebook className="icon-item"/>
+            </div>
+            <div className="col d-flex justify-content-center" style={iconStyle}>
+              <AiFillInstagram className="icon-item" />
+            </div>
+            <div className="col d-flex justify-content-center" style={iconStyle}>
+              <AiFillYoutube className="icon-item"/>
+            </div>
+            <div className="col d-flex justify-content-center" style={iconStyle}>
+              <AiOutlineTwitter className="icon-item"/>
+            </div>
+          </div>
+        </div>
+      </footer>
     );
   }
 }
