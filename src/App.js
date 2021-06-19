@@ -8,10 +8,8 @@ import {
   Rules,
   FooterSide,
   UserInfo,
-  FoodManagement,
   FoodMenu,
   FoodDetail,
-  QrCodeManagement,
   NotFound404,
 } from "./untils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -35,8 +33,6 @@ class App extends Component {
             <Route exact path="/rules" component={Rules} />
             <Route exact path="/menu" component={FoodMenu} />
             <Route exact path="/food/:id" component={FoodDetail} />
-            <Route exact path="/manager/foodmanagement" component={FoodManagement} />
-            <Route exact path="/manager/qrcodemanagement" component={QrCodeManagement}/>
             <Route component={NotFound404}/>
           </Switch>
           <FooterSide />

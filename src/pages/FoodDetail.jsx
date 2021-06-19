@@ -3,13 +3,16 @@ import  { Col, Container, Button, Form, Image, Row, Toast, OverlayTrigger, Popov
 import { FaStar, FaArrowUp, FaArrowDown } from "react-icons/fa"
 import { useParams } from "react-router-dom"
 import axios from '../axios'
+import { checkLogin } from "../untils/functions"
 
 export default function FoodDetail(props) {
-    const { id } = useParams()
-    const [ food, setFood ] = useState(null)
-    const [ quantity, setQuantity ] = useState(1)
-    const [ showSuccess, setShowSuccess ] = useState(false)
-    const shouldLogin = localStorage.getItem("token") == null
+    const { id } = useParams();
+    const [ food, setFood ] = useState(null);
+    const [ quantity, setQuantity ] = useState(1);
+    const [ showSuccess, setShowSuccess ] = useState(false);
+    const [ messageSuccess, setMessageSuccess ] = useState("");
+    const [ showError, setShowError ] = useState(false);
+    const [ messageError, setMessageError ] = useState("");
 
     useEffect(() => {
         axios
@@ -21,45 +24,57 @@ export default function FoodDetail(props) {
     }, [id])
 
     const orderFood = (e) => {
-        if (shouldLogin) {
-            e.preventDefault()
-            setShowSuccess(true)
+        if (!checkLogin()) {
+            e.preventDefault();
+            setShowError(true);
+            setMessageError("Bạn cần đăng nhập trước khi đặt hàng");
         } else {
-            e.preventDefault()
+            e.preventDefault();
             const order = {
                 foodId: id,
                 quantity: quantity,
-                userId: 1
-            }
-            console.log(order)
-            setShowSuccess(true)
+            };
+            axios
+                .post("/api/order", order)
+                .then(res => {
+                    setShowSuccess(true);
+                    setMessageSuccess("Bạn đã đặt hàng thành công");
+                })
+                .catch(err => {
+                    const message = err.response ? err.response.message : "Lỗi hệ thống";
+                    setShowError(false);
+                    setMessageError(message);
+                });
         }
     }
 
-    const toast = shouldLogin ? (
-        <Toast show={showSuccess} onClose={() => setShowSuccess(false)} delay="2000" autohide style={{ minWidth: "100%" }} className="bg-danger text-light">
-            <Toast.Header className="bg-danger text-light">
-                <h5 className="mr-auto">Bạn cần đăng nhập</h5>
-            </Toast.Header>
-            <Toast.Body>
-                Bạn cần đăng nhập trước khi đặt hàng
-            </Toast.Body>
-        </Toast>
-    ) : (
-        <Toast show={showSuccess} onClose={() => setShowSuccess(false)} delay="2000" autohide style={{ minWidth: "100%" }} className="bg-warning text-dark">
+    const success = (
+        <Toast show={showSuccess} onClose={() => { setShowSuccess(false); setMessageSuccess(""); }} delay="3000" autohide style={{ minWidth: "100%" }} className="bg-warning text-dark">
             <Toast.Header className="bg-warning text-dark">
                 <h5 className="mr-auto">Thành công</h5>
             </Toast.Header>
             <Toast.Body>
-                Món ăn đã được thêm vào giỏ hàng
+                {messageSuccess}
             </Toast.Body>
         </Toast>
-    )
+    );
+
+    const error = (
+        <Toast show={showError} onClose={() => { setShowError(false); setMessageError(""); }} delay="2000" autohide style={{ minWidth: "100%" }} className="bg-danger text-light">
+            <Toast.Header className="bg-danger text-light">
+                <h5 className="mr-auto">Thất bại</h5>
+            </Toast.Header>
+            <Toast.Body>
+                {messageError}
+            </Toast.Body>
+        </Toast>
+    );
 
     const render = food ? (
         <div className="container my-3 py-3">
             <Container>
-                {toast}
+                {success}
+                {error}
             </Container>
             <Image 
                 className="my-3"
@@ -135,5 +150,5 @@ export default function FoodDetail(props) {
         </div>
     ) : <div/>
 
-    return render
+    return render;
 }
