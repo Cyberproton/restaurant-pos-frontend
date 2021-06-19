@@ -43,10 +43,9 @@ export default class FoodMenu extends Component {
 
     render() {
         const foodSearch = replaceLatinDiacritics(this.state.foodSearch.toLowerCase());
-        console.log(foodSearch);
         const foodViews = this.state.foods.filter(food => replaceLatinDiacritics(food.name.toLowerCase()).includes(foodSearch)).map((food, index) => {
             return (
-                <FoodView className="col-auto m-1" key={index} food={food} />
+                <FoodView className="col-auto" key={index} food={food} />
             );
         });
 
@@ -57,21 +56,6 @@ export default class FoodMenu extends Component {
             </Container>
         );
     }
-}
-
-function FoodDeck(props) {
-    const foods = props.foods
-    const foodViews = foods.map((food, index) => {
-        return (
-            <FoodView className="col-auto m-1" key={index} food={food} />
-        )
-    })
-    return (
-        <Container>
-            <SearchBar />
-            <Row className="row row-cols-2 mt-3">{foodViews}</Row>
-        </Container>
-    )
 }
 
 class FoodView extends Component {
