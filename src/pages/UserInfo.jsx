@@ -1,551 +1,274 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Button, Form, Toast } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
-import { FaUserEdit, FaLock, FaSignOutAlt } from 'react-icons/fa'
-import { checkLogin, formatDate, getDate } from "../untils/functions";
 import axios from "../axios";
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 class UserInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.toggleProfileEditor = this.toggleProfileEditor.bind(this);
-    this.exitProfileEditor = this.exitProfileEditor.bind(this);
-    this.togglePasswordEditor = this.togglePasswordEditor.bind(this);
-    this.exitPasswordEditor = this.exitPasswordEditor.bind(this);
-    this.inputChange = this.inputChange.bind(this);
-    this.dateInputChange = this.dateInputChange.bind(this);
-    this.updateProfile = this.updateProfile.bind(this);
-    this.updatePassword = this.updatePassword.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
-  }
-
   state = {
+    islogout: false,
+    isModify: false,
     user: {},
-    userForm: {},
-    currentPassword: null,
-    newPassword: null,
-    rePassword: null,
-    isEditingProfile: false,
-    isEditingPassword: false,
-    showError: false,
-    errorMessage: "",
-    showErrorPassword: false,
-    errorMessagePassword: "",
-    showSuccess: false,
-    successMessage: "",
-    showSuccessPassword: false,
-    successMessagePassword: "",
-    requireLogin: false,
+    username: "",
+    password: "",
+    newpassword: "",
+    renewpassword: "",
+    fullname: "",
+    phonenumber: "",
+    birthday: "",
+    address: "",
   };
 
-  componentDidMount() {
-    if (!checkLogin()) {
-      return;
-    }
-
-    axios
-      .get("/api/user")
-      .then(res => {
-        const user = res.data;
-        if (!user) {
-          return;
-        }
-        this.setState({
-          user: user,
-          userForm: Object.assign({}, user)
-        });
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
-  }
-
-  handleLogout() {
+  handleLogout = () => {
     localStorage.removeItem("token");
     this.setState({
-      requireLogin: true
+      islogout: true,
     });
+  };
+
+  UNSAFE_componentWillMount() {
+    this.getInfo();
   }
 
-  clearInputs() {
-    document.getElementById("input-current-password").value = "";
-    document.getElementById("input-new-password").value = "";
-    document.getElementById("input-repassword").value = "";
-  }
-
-  updateProfile() {
-    if (!checkLogin()) {
-      this.setState({
-        requireLogin: true
-      });
-    }
-
-    const userForm = this.state.userForm;
-    const body = {};
-    const fullname = userForm.fullname;
-    if (fullname != null) {
-      body.fullname = fullname.trim();
-    }
-    const phonenumber = userForm.phonenumber;
-    if (phonenumber != null) {
-      body.phonenumber = phonenumber.trim();
-    }
-    const birthday = userForm.birthday;
-    if (birthday != null) {
-      body.birthday = birthday.trim();
-    }
-    const address = userForm.address;
-    if (address != null) {
-      body.address = address.trim();
-    }
-
-    axios
-      .put("/api/user/profile", body)
-      .then(res => {
-        const newUser = res.data.user;
-        console.log(newUser);
-        this.setState({
-          user: newUser,
-          userForm: Object.assign({}, newUser),
-          showSuccess: true,
-          successMessage: "Thông tin của bạn đã được cập nhật",
-          isEditingProfile: false,
-          isEditingPassword: false,
-          currentPassword: null,
-          newPassword: null,
-          rePassword: null,
-        });
-        this.clearInputs();
-      })
-      .catch(err => {
-        const message = err.response ? err.response.data.message : "";
-        this.setState({
-          showError: true,
-          errorMessage: message,
-          currentPassword: null,
-          newPassword: null,
-          rePassword: null,
-        })
-        this.clearInputs();
-      })
-  }
-
-  updatePassword() {
-    if (!checkLogin()) {
-      this.setState({
-        requireLogin: true
-      });
-    }
-
-    const currentPassword = this.state.currentPassword;
-    const newPassword = this.state.newPassword;
-    const rePassword = this.state.rePassword;
-
-    if (!currentPassword || !currentPassword.match(".{6,}")) {
-      this.setState({
-        currentPassword: null,
-        newPassword: null,
-        rePassword: null,
-        showErrorPassword: true,
-        errorMessagePassword: "Mật khẩu hiện tại không hợp lệ, phải có từ 6 ký tự trở lên"
-      });
-      this.clearInputs();
-      return;
-    }
-
-    if (!newPassword || !newPassword.match(".{6,}")) {
-      this.setState({
-        currentPassword: null,
-        newPassword: null,
-        rePassword: null,
-        showErrorPassword: true,
-        errorMessagePassword: "Mật khẩu mới không hợp lệ, phải có từ 6 ký tự trở lên"
-      });
-      this.clearInputs();
-      return;
-    }
-
-    if (rePassword !== newPassword) {
-      this.setState({
-        currentPassword: null,
-        newPassword: null,
-        rePassword: null,
-        showErrorPassword: true,
-        errorMessagePassword: "Vui lòng xác nhận lại mật khẩu"
-      });
-      this.clearInputs();
-      return;
-    }
-
-    axios
-      .put("/api/user/password", {
-        currentPassword: currentPassword,
-        newPassword: newPassword,
-        rePassword: rePassword,
-      })
-      .then(res => {
-        const newUser = res.data.user;
-        if (!newUser) {
-          return;
-        }
-        this.setState({
-          user: newUser,
-          userForm: Object.assign({}, newUser),
-          showSuccessPassword: true,
-          successMessagePassword: "Mật khẩu của bạn đã được cập nhật",
-          isEditingPassword: false,
-          currentPassword: null,
-          newPassword: null,
-          rePassword: null,
-        });
-        this.clearInputs();
-      })
-      .catch(err => {
-        let message = err.response ? err.response.data.message : "";
-        if (message.includes("Current password")) {
-          message = "Mật khẩu hiện tại không đúng";
-        } else if (message.includes("New password")) {
-          message = "Mật khẩu mới và nhập lại mật khẩu không trùng";
-        }
-        this.setState({
-          showErrorPassword: true,
-          errorMessagePassword: message,
-          currentPassword: null,
-          newPassword: null,
-          rePassword: null,
-        })
-        this.clearInputs();
-      });
-
-    this.clearInputs();
-  }
-
-  inputChange(event, key) {
-    const userForm = this.state.userForm;
-    userForm[key] = event.target.value;
-    this.setState(prev => ({
-      userForm: userForm
-    }));
-  }
-
-  dateInputChange(date) {
-    const userForm = this.state.userForm;
-    userForm.birthday = formatDate(date);
-
+  getInfo = async () => {
+    const token = localStorage.getItem("token");
+    const res = await axios.get(`/api/user`, {
+      headers: { token: token },
+    });
     this.setState({
-      userForm: userForm
+      user: {
+        username: res.data.username,
+        fullname: res.data.fullname,
+        phonenumber: res.data.phonenumber,
+        birthday: res.data.birthday,
+        address: res.data.address,
+      },
     });
-  }
+  };
 
-  toggleProfileEditor(event) {
+  deleteAccount = (event) => {
     event.preventDefault();
-    this.setState(prev => ({
-      isEditingProfile: !prev.isEditingProfile
-    }));
-  }
+    const token = localStorage.getItem("token");
+    axios
+      .delete(`/api/user`, {
+        headers: { token: token },
+      })
+      .then((res) => {
+        localStorage.clear();
+        this.setState({
+          islogout: true,
+        });
+      });
+  };
 
-  exitProfileEditor(event) {
-    event.preventDefault();
-    const d1 = document.getElementById("phonenumber-input");
-    d1.value = d1.defaultValue;
-    const d2 = document.getElementById("fullname-input");
-    d2.value = d2.defaultValue;
-    const d3 = document.getElementById("address-input");
-    d3.value = d3.defaultValue;
-    this.setState(prev => ({
-      isEditingProfile: false,
-      userForm: Object.assign({}, prev.user)
-    }));
-  }
+  handleModify = () => {
+    this.setState({ isModify: !this.state.isModify });
+  };
 
-  togglePasswordEditor(event) {
-    event.preventDefault();
-    this.setState(prev => ({
-      isEditingPassword: !prev.isEditingPassword
-    }));
-  }
+  handleInputChange = (event) => {
+    const value = event.target.value;
+    this.setState({
+      ...this.state,
+      [event.target.name]: value,
+    });
+  };
 
-  exitPasswordEditor(event) {
-    event.preventDefault();
-    this.setState(prev => ({
-      isEditingPassword: false,
-      currentPassword: null,
-      newPassword: null,
-      rePassword: null
-    }));
-    this.clearInputs();
-  }
+  handleUpdates = () => {
+    const token = localStorage.getItem("token");
+    const {
+      username,
+      password,
+      newpassword,
+      renewpassword,
+      fullname,
+      phonenumber,
+      birthday,
+      address,
+    } = this.state;
+    if (username.length === 0) alert("Bạn phải nhập tên đăng nhập!");
+    else if (username.length < 6) alert("Tên đăng nhập phải dài hơn 5 ký tự!");
+    else if (newpassword !== renewpassword)
+      alert("Nhập lại mật khẩu mới không khớp!");
+    else {
+      axios
+        .put(
+          `/api/user`,
+          {
+            username,
+            password,
+            newpassword,
+            fullname,
+            phonenumber,
+            birthday,
+            address,
+          },
+          {
+            headers: {
+              token: token,
+            },
+          }
+        )
+        .then((res) => {
+          alert("Thay đổi thành công !");
+          this.setState({
+            username: "",
+            password: "",
+            newpassword: "",
+            renewpassword: "",
+            fullname: "",
+            phonenumber: "",
+            birthday: "",
+            address: "",
+          });
+          this.handleModify();
+        })
+        .catch((error) => {
+          alert(JSON.stringify(error));
+        });
+    }
+  };
 
   render() {
-    if (!checkLogin()) {
-      return <Redirect to="/login"/>
+    if (this.state.islogout) {
+      return <Redirect to="/" />;
     }
 
-    const user = this.state.user;
-    const userForm = this.state.userForm;
-    const username = user.fullname ? user.fullname.trim() ? user.fullname : user.username : user.username;
-    const title = username ? (
-      <Container className="mb-3 d-flex justify-content-center">
-          <h3>Xin chào {username}</h3>
-      </Container>
+    const isModify = this.state.isModify;
+
+    const showButton = isModify ? (
+      <div>
+        <div className="user-button d-flex flex-column">
+          <Button className="btn btn-primary" onClick={this.handleUpdates}>
+            Cập nhật
+          </Button>
+          <Button className="btn btn-danger" onClick={this.handleModify}>
+            Hủy bỏ
+          </Button>
+        </div>
+      </div>
     ) : (
-      undefined
-    );
-
-    const editProfileButton = !this.state.isEditingProfile ? (
-      <Button 
-        variant="warning" 
-        onClick={this.toggleProfileEditor}
-      >
-        Sửa đổi thông tin
-      </Button>
-    ) : (
-      <Button 
-        variant="danger" 
-        onClick={this.exitProfileEditor}
-      >
-        Hủy thay đổi
-      </Button>
-    );
-
-    const saveProfileButton = !this.state.isEditingProfile ? (
-      <Button 
-        variant="primary"
-        disabled="true"
-      >
-        Lưu thay đổi
-      </Button>
-    ) : (
-      <Button 
-        variant="primary"
-        onClick={this.updateProfile}
-      >
-        Lưu thay đổi
-      </Button>
-    );
-
-    const editPasswordButton = !this.state.isEditingPassword ? (
-      <Button 
-        variant="warning" 
-        onClick={this.togglePasswordEditor}
-      >
-        Sửa mật khẩu
-      </Button>
-    ) : (
-      <Button 
-        variant="danger" 
-        onClick={this.exitPasswordEditor}
-      >
-        Hủy thay đổi
-      </Button>
-    );
-
-    const savePasswordButton = !this.state.isEditingPassword ? (
-      <Button 
-        variant="primary"
-        disabled="true"
-      >
-        Lưu thay đổi
-      </Button>
-    ) : (
-      <Button 
-        variant="primary"
-        onClick={this.updatePassword}
-      >
-        Lưu thay đổi
-      </Button>
-    );
-
-    const toastSuccess = (
-      <Toast show={this.state.showSuccess} onClose={() => { this.setState({ showSuccess: false, successMessage: "" }) }} delay="5000" autohide style={{ minWidth: "100%" }} className="bg-primary text-light">
-        <Toast.Header className="bg-primary text-light">
-            <h5 className="mr-auto">Thành công</h5>
-        </Toast.Header>
-        <Toast.Body>
-            {this.state.successMessage}
-        </Toast.Body>
-      </Toast>
-    );
-
-    const toastSuccessPassword = (
-      <Toast show={this.state.showSuccessPassword} onClose={() => { this.setState({ showSuccessPassword: false, successMessagePassword: "" }) }} delay="5000" autohide style={{ minWidth: "100%" }} className="bg-primary text-light">
-        <Toast.Header className="bg-primary text-light">
-            <h5 className="mr-auto">Thành công</h5>
-        </Toast.Header>
-        <Toast.Body>
-            {this.state.successMessagePassword}
-        </Toast.Body>
-      </Toast>
-    );
-
-    const toastError = (
-      <Toast show={this.state.showError} onClose={() => { this.setState({ showError: false, errorMessage: "" }) }} delay="5000" autohide style={{ minWidth: "100%" }} className="bg-danger text-light">
-        <Toast.Header className="bg-danger text-light">
-            <h5 className="mr-auto">Có lỗi xảy ra</h5>
-        </Toast.Header>
-        <Toast.Body>
-            Chi tiết: {this.state.errorMessage}
-        </Toast.Body>
-      </Toast>
-    );
-
-    const toastErrorPassword = (
-      <Toast show={this.state.showErrorPassword} onClose={() => { this.setState({ showErrorPassword: false, errorMessagePassword: "" }) }} delay="5000" autohide style={{ minWidth: "100%" }} className="bg-danger text-light">
-        <Toast.Header className="bg-danger text-light">
-            <h5 className="mr-auto">Có lỗi xảy ra</h5>
-        </Toast.Header>
-        <Toast.Body>
-            Chi tiết: {this.state.errorMessagePassword}
-        </Toast.Body>
-      </Toast>
+      <div>
+        <div className="user-button d-flex flex-column">
+          <Button className="btn btn-primary" onClick={this.handleModify}>
+            Cập nhật thông tin
+          </Button>
+          <Button className="btn btn-danger" onClick={this.handleLogout}>
+            Đăng xuất
+          </Button>
+        </div>
+        <Button
+          className="btn btn-danger delete-button-account"
+          onClick={this.deleteAccount}
+        >
+          Xoá bỏ tài khoản
+        </Button>
+      </div>
     );
 
     return (
-      <Container className="mt-5">
-        <Container className="mb-3">
-          {toastSuccess}
-          {toastError}
-        </Container>
-        { title }
-        <hr style={{ border: "1px solid grey" }}/>
-        <Container>
-          <Row className="my-3">
-            <Col>
-              <h5><FaUserEdit/> Thông tin của bạn</h5>
-            </Col>
-          </Row>
-          <Row className="my-3">
-            <Col>Tên đăng nhập:</Col>
-            <Col>
-              <input defaultValue={user.username} disabled/>
-            </Col>
-          </Row>
-          <Row className="my-3">
-            <Col>Họ và Tên:</Col>
-            <Col>
-              <input 
-                id="fullname-input"
-                defaultValue={user.fullname} 
-                onChange={(e) => this.inputChange(e, "fullname")}
-                disabled={!this.state.isEditingProfile}
-              />
-            </Col>
-          </Row>
-          <Row className="my-3">
-            <Col>Số điện thoại:</Col>
-            <Col>
-              <input 
-                id="phonenumber-input"
-                defaultValue={user.phonenumber} 
-                type="number"
-                onChange={(e) => this.inputChange(e, "phonenumber")}
-                disabled={!this.state.isEditingProfile}/>
-            </Col>
-          </Row>
-          <Row className="my-3">
-            <Col>Ngày sinh:</Col>
-            <Col>
-              <ReactDatePicker 
-                selected={getDate(userForm.birthday)} 
-                onChange={(date) => this.dateInputChange(date)}
-                maxDate={new Date()}
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select"
-                disabled={!this.state.isEditingProfile}
-                dateFormat="dd/MM/yyyy"
-              />
-            </Col>
-          </Row>
-          <Row className="my-3">
-            <Col>Địa chỉ:</Col>
-            <Col>
-              <input 
-                id="address-input"
-                defaultValue={user.address} 
-                onChange={(e) => this.inputChange(e, "address")}
-                disabled={!this.state.isEditingProfile}
-              />
-            </Col>
-          </Row>
-          <Row className="mt-5 mb-3">
-            <Col className="d-flex justify-content-around">
-              {editProfileButton}
-            </Col>
-            <Col className="d-flex justify-content-around">
-              {saveProfileButton}
-            </Col>
-          </Row>
-          <hr/>
-          <Container className="mb-3">
-            {toastSuccessPassword}
-            {toastErrorPassword}
-          </Container>
-          <Row className="my-3">
-            <Col>
-              <h5><FaLock/> Đổi mật khẩu</h5>
-            </Col>
-          </Row>
-          <Row className="my-3">
-            <Col>Mật khẩu hiện tại:</Col>
-            <Col>
-              <input 
-                id="input-current-password"
-                type="password" 
-                disabled={!this.state.isEditingPassword}
-                onChange={(e) => { 
-                  this.setState({ currentPassword: e.target.value })
-                }}
-              />
-            </Col>
-          </Row>
-          <Row className="my-3">
-            <Col>Nhập mật khẩu mới:</Col>
-            <Col>
-              <input 
-                id="input-new-password"
-                type="password" 
-                disabled={!this.state.isEditingPassword}
-                onChange={(e) => { 
-                  this.setState({ newPassword: e.target.value })
-                }}
-              />
-            </Col>
-          </Row>
-          <Row className="my-3">
-            <Col>Nhập lại mật khẩu:</Col>
-            <Col>
-              <input 
-                id="input-repassword"
-                type="password" 
-                disabled={!this.state.isEditingPassword}
-                onChange={(e) => { 
-                  this.setState({ rePassword: e.target.value })
-                }}
-              />
-            </Col>
-          </Row>
-          <Row className="mt-5 mb-5">
-            <Col className="d-flex justify-content-around">
-              {editPasswordButton}
-            </Col>
-            <Col className="d-flex justify-content-around">
-              {savePasswordButton}
-            </Col>
-          </Row>
+      <Container className="user-info-container">
+        <h1>Tran Long An</h1>
+        <Row className="user-item-info">
+          <Col>Tên đăng nhập :</Col>
+          <Col>
+            <input
+              name="username"
+              disabled={!isModify}
+              placeholder={this.state.user.username}
+              value={this.state.username}
+              onChange={this.handleInputChange}
+            />
+          </Col>
+        </Row>
+        {isModify && (
+          <div>
+            <Row className="user-item-info">
+              <Col>Mật khẩu cũ :</Col>
+              <Col>
+                <input
+                  type="password"
+                  name="password"
+                  disabled={!isModify}
+                  value={this.state.password}
+                  onChange={this.handleInputChange}
+                />
+              </Col>
+            </Row>
+            <Row className="user-item-info">
+              <Col>Mật khẩu mới :</Col>
+              <Col>
+                <input
+                  type="password"
+                  name="newpassword"
+                  disabled={!isModify}
+                  value={this.state.newpassword}
+                  onChange={this.handleInputChange}
+                />
+              </Col>
+            </Row>
+            <Row className="user-item-info">
+              <Col>Xác nhận mật khẩu :</Col>
+              <Col>
+                <input
+                  type="password"
+                  name="renewpassword"
+                  disabled={!isModify}
+                  value={this.state.renewpassword}
+                  onChange={this.handleInputChange}
+                />
+              </Col>
+            </Row>
+          </div>
+        )}
 
-          <hr/>
-          <Row className="my-3">
-            <Col>
-              <h5><FaSignOutAlt/> Đăng xuất</h5>
-            </Col>
-          </Row>
-          <Row className="my-3 d-flex justify-content-center">
-            <Button variant="danger" block onClick={this.handleLogout} style={{ width: "70%" }}>Đăng xuất</Button>
-          </Row>
-        </Container>
+        <Row className="user-item-info">
+          <Col>Họ và Tên :</Col>
+          <Col>
+            <input
+              disabled={!isModify}
+              name="fullname"
+              placeholder={this.state.user.fullname}
+              value={this.state.fullname}
+              onChange={this.handleInputChange}
+            />
+          </Col>
+        </Row>
+        <Row className="user-item-info">
+          <Col>Số điện thoại :</Col>
+          <Col>
+            <input
+              disabled={!isModify}
+              name="phonenumber"
+              placeholder={this.state.user.phonenumber}
+              value={this.state.phonenumber}
+              onChange={this.handleInputChange}
+            />
+          </Col>
+        </Row>
+        <Row className="user-item-info">
+          <Col>Ngày sinh :</Col>
+          <Col>
+            <input
+              disabled={!isModify}
+              name="birthday"
+              placeholder={this.state.user.birthday}
+              value={this.state.birthday}
+              onChange={this.handleInputChange}
+            />
+          </Col>
+        </Row>
+        <Row className="user-item-info">
+          <Col>Địa chỉ :</Col>
+          <Col>
+            <input
+              disabled={!isModify}
+              name="address"
+              placeholder={this.state.user.address}
+              value={this.state.address}
+              onChange={this.handleInputChange}
+            />
+          </Col>
+        </Row>
+        {showButton}
       </Container>
     );
   }
