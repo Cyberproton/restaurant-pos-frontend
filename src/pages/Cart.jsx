@@ -7,7 +7,6 @@ export default class Cart extends Component {
     super(props)
     this.onClickOrder = this.onClickOrder.bind(this)
     this.onPopup = this.onPopup.bind(this)
-    this.onViewClicked = this.onViewClicked.bind(this)
   }
 
   state = {
@@ -33,7 +32,8 @@ export default class Cart extends Component {
 
   render() {
     const order = this.state.orders.find(x => x._id === this.state.orderSelected)
-    const removeOrder = (this.state.isPopup && order) ? this.getPopup(order, this.state.isPopup) : <div />
+    const removeOrder = (this.state.isPopup && order) ? this.getPopup(order, this.state.isPopup, this.state.isSelected) : <div />
+
     return (
       <div className="container mt-3" size="sm">
         <h4><span role='img' aria-label='accessible-emoji'>🛒</span>Giỏ hàng </h4>
@@ -44,26 +44,12 @@ export default class Cart extends Component {
     );
   }
 
-  onViewClicked(OrderId, isSelected) {
-    const selectedOrder = this.state.orderSelected
-    if (isSelected) {
-      selectedOrder.push(OrderId)
-    }
-    else {
-      const i = selectedOrder.indexOf(OrderId)
-      selectedOrder.splice(i, 1)
-    }
-    this.setState({
-      selectedOrder: selectedOrder
-    })
-  }
-
-  onClickOrder(OrderId) {
+  onClickOrder(OrderId, isSelected) {
     if (OrderId === this.state.orderSelected) {
       this.setState({
         orderSelected: null,
         isPopup: false,
-        isSelected: false,
+        isSelected: !isSelected,
       })
       return true
     }
@@ -71,7 +57,7 @@ export default class Cart extends Component {
       if (this.state.orderSelected === null) {
         this.setState({
           orderSelected: OrderId,
-          isSelected: false,
+          isSelected: !isSelected,
           isPopup: false
         })
         return true
@@ -87,10 +73,10 @@ export default class Cart extends Component {
   }
 
   handleDelete(order) {
-    order.state = 'Canceled'
-    this.setState(prev => ({
-      isPopup: !prev.isPopup,
-    }))
+    order.state = 'Cancelled'
+    this.setState({
+      isPopup: false
+    })
   }
 
   getPopup(order, show) {
@@ -125,7 +111,28 @@ export default class Cart extends Component {
 }
 
 class OrderViewer extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      userId: 'ntnt'
+    }
+  }
+
+  componentDidMount() {
+    axios
+      .get('/api/user')
+      .then((res) => {
+        this.setState({
+          userId: res.data._id
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   render() {
+    const mainID = this.state.userId
     const orders = this.props.orders
     const remove = this.props.remove
     const onClickOrder = this.props.onClickOrder
@@ -134,7 +141,7 @@ class OrderViewer extends Component {
       return (
         <React.Fragment>
           <p>
-            <i>Có vẻ không có gì ở đây cả, quý khách vui lòng kiểm tra lại nhé</i>
+            <i>Có vẻ không có gì ở đây cả, quý khách vui lòng kiểm tra lại nhé </i>&nbsp;
             <span role='img' aria-label='accessible-emoji'>🙄</span>
           </p>
           <br />
@@ -142,50 +149,63 @@ class OrderViewer extends Component {
       )
     else {
       const listByPending = orders.map((value) => {
-        if (value.state === 'Pending')
+        if (value.state === 'Pending' && mainID === value.buyer)
           return <TableRender
             key={value._id} order={value} onClickOrder={onClickOrder} />
-        else return null
+        return null
       })
 
       const listByAccept = orders.map((value) => {
-        if (value.state === 'Accepted')
+        if (value.state === 'Accepted' && mainID === value.buyer)
           return <TableRender
             key={value._id} order={value} onClickOrder={onClickOrder} />
-        else return null
+        return null
       })
 
       const listByReject = orders.map((value) => {
-        if (value.state === 'Rejected')
+        if (value.state === 'Rejected' && mainID === value.buyer)
           return <TableRender
             key={value._id} order={value} onClickOrder={onClickOrder} />
-        else return null
+        return null
       })
 
-      let a = 0, b = 0, c = 0
+      const listByCancelled = orders.map((value) => {
+        if (value.state === 'Cancelled' && mainID === value.buyer)
+          return <TableRender
+            key={value._id} order={value} onClickOrder={onClickOrder} />
+        return null
+      })
+
+      let a = 0, b = 0, c = 0, d = 0
       orders.map(order => {
-        if (order.state === 'Accepted') a += 1
-        if (order.state === 'Pending') b += 1
-        if (order.state === 'Rejected') c += 1
+        if (order.buyer === mainID) {
+          if (order.state === 'Accepted') a += 1
+          if (order.state === 'Pending') b += 1
+          if (order.state === 'Rejected') c += 1
+          if (order.state === 'Cancelled') d += 1
+        }
         return null
       })
       return (
         <div width='100%'>
           <br />
-          <Tabs defaultActiveKey="Confirmed" justify>
-            <Tab eventKey="Confirmed" title="Đã xác nhận">
+          <Tabs defaultActiveKey="1" justify>
+            <Tab eventKey="1" title="Đã xác nhận">
               <TabContent><TableView ListBy={listByAccept} control={a} /></TabContent>
               {remove ? <Button variant="danger" onClick={onPopup}>Xóa đơn hàng</Button> :
                 <Button className="col m-2" variant="danger" disabled>Xóa đơn hàng</Button>}
-              {console.log(remove)}
               <Popup />
             </Tab>
-            <Tab eventKey="Confirming" title="Đang chờ xác nhận">
+            <Tab eventKey="2" title="Đang xác nhận">
               <TabContent><TableView ListBy={listByPending} control={b} /></TabContent>
-              {remove ? <Button variant="danger" onClick={onPopup}>Xóa đơn hàng</Button> : <Button className="col m-2" variant="danger" disabled>Xóa đơn hàng</Button>}
+              {remove ? <Button variant="danger" onClick={onPopup}>Xóa đơn hàng</Button> :
+                <Button className="col m-2" variant="danger" disabled>Xóa đơn hàng</Button>}
             </Tab>
-            <Tab eventKey="Reject" title="Từ chối">
+            <Tab eventKey="3" title="Từ chối">
               <TabContent><TableView ListBy={listByReject} control={c} /></TabContent>
+            </Tab>
+            <Tab eventKey="4" title="Hủy">
+              <TabContent><TableView ListBy={listByCancelled} control={d} /></TabContent>
             </Tab>
           </Tabs>
         </div>
@@ -199,37 +219,43 @@ class TableRender extends Component {
     super(props)
     this.handleClick = this.handleClick.bind(this)
     this.state = {
-      isSelected: false
+      isSelected: false,
+    }
+  }
+
+  handleClick() {
+    const update = this.props.onClickOrder(this.props.order._id)
+    if (update) {
+      this.setState({
+        isSelected: !this.state.isSelected
+      })
     }
   }
 
   render() {
     const order = this.props.order
-    const buyer = order.buyer.substring(0, 5) + '[...]'
+    const chosen = this.state.isSelected
     const food = order.food
-    const checkedRow = this.state.isSelected ? 'table-primary text-dark' : 'table-light text-dark'
-
+    const checkedRow = chosen ? 'table-primary text-dark' : 'table-light text-dark'
     if (order.food === null)
       return null
-    else return (
-      <tr key={order._id} className={checkedRow} onClick={this.handleClick}>
-        <td>{buyer}</td>
-        <td>{food.name}</td>
-        <td>{order.state}</td>
-        <td>{order.quantity}</td>
-        <td width="12%">{food.price * order.quantity}</td>
-      </tr >
-    )
-  }
-
-  handleClick() {
-    const update = this.props.onClickOrder(this.props.order._id, this.state.isSelected);
-    if (update){
-      this.setState({
-        isSelected: !this.state.isSelected
-      })
+    else {
+      if (order.state === 'Cancelled' && chosen === false) {
+        this.props.onClickOrder(this.props.order._id)
+        this.setState({
+          isSelected: true
+        })
+      }
+      return (
+        <tr key={order._id} className={checkedRow} onClick={this.handleClick}>
+          <td>{order.buyer.substring(0, 5) + '[...]'}</td>
+          <td>{food.name}</td>
+          <td>{order.state}</td>
+          <td>{order.quantity}</td>
+          <td width="12%">{food.price * order.quantity}</td>
+        </tr >
+      )
     }
-    console.log(this.state.isSelected)
   }
 }
 
@@ -239,7 +265,7 @@ function TableView(props) {
     return (
       <React.Fragment>
         <p>
-          <i>Có vẻ không có gì ở đây cả, quý khách vui lòng kiểm tra lại nhé</i>
+          <i>Có vẻ chưa có gì ở đây cả </i>&nbsp;
           <span role='img' aria-label='accessible-emoji'>🙄</span>
         </p>
         <br />
