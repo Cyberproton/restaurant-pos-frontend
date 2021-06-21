@@ -12,22 +12,17 @@ class FooterSide extends Component {
       <footer className="footer-side">
         <h2>POS System - Restaurant</h2>
         <hr />
-        <div className="d-flex">
-          <div className="p-2 w-80">
-            <ul>
-              <li>Bach Khoa Univesity</li>
-              <li>Oppen from 8am to 17pm </li>
-              <li>Oppen from 8am to 17pm </li>
-            </ul>
-          </div>
-          <div className="p-2 flex-shrink-1">
-            <ul>
-              <li>Bach Khoa Univesity</li>
-              <li>Oppen from 8am to 17pm </li>
-              <li>Oppen from 8am to 17pm </li>
-            </ul>
-          </div>
-        </div>
+        <ul>
+          <li>Bach Khoa Univesity - Restaurant POS</li>
+          <li>Giờ mở cửa : từ 8h sáng đến 10h tối</li>
+          <li>Phục vụ vào tất cả các ngày trong tuần</li>
+          <li>Cập nhật các món mới hằng tháng</li>
+          <br />
+          <li>Tiêu chuẩn: 5 sao</li>
+          <li>Địa chỉ: 123 Trần Văn A - TP Hồ Chí Minh</li>
+          <li>Liên hệ: 0123456789</li>
+          <li>Email: email@gmail.com.vn</li>
+        </ul>
         <div className="icon">
           <AiFillFacebook className="icon-item" />
           <AiFillInstagram className="icon-item" />

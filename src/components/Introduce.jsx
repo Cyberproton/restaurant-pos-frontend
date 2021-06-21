@@ -16,8 +16,8 @@ class Introduce extends Component {
             alt="First slide"
           />
           <Carousel.Caption className="caption-carousel">
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            <h3>Chào mừng</h3>
+            <p>Chào mừng bạn đến với nhà hàng số 1 tại Việt Nam</p>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
@@ -28,8 +28,11 @@ class Introduce extends Component {
           />
 
           <Carousel.Caption className="caption-carousel">
-            <h3>Second slide label</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <h3>Điểm nổi bật</h3>
+            <p>
+              Những món ăn đến từ đa quốc gia với nhiều loại cho quý khách thỏa
+              sức lựa chọn.
+            </p>
           </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
@@ -40,9 +43,10 @@ class Introduce extends Component {
           />
 
           <Carousel.Caption className="caption-carousel">
-            <h3>Third slide label</h3>
+            <h3>Thành tựu</h3>
             <p>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+              Là nhà hàng được đánh giá cao với tiêu chuẩn 5 sao. Chúng tôi tự
+              tin đưa dến cho khách hàng hương vị suất sắc trong từng món ăn
             </p>
           </Carousel.Caption>
         </Carousel.Item>
