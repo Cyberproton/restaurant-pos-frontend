@@ -1,78 +1,171 @@
 import React from "react";
-import { Container, InputGroup, FormControl, Button } from "react-bootstrap";
+import {
+  Container,
+  InputGroup,
+  FormControl,
+  Button,
+  Dropdown,
+} from "react-bootstrap";
 import { FcSearch } from "react-icons/fc";
 
 class Search extends React.Component {
+  state = {
+    searchString: "",
+    selectType: "",
+    selectRegions: "",
+    selectSort: "",
+  };
+
+  handleChange = (event) => {
+    // console.log(event.target.value);
+    this.setState({ searchString: event.target.value });
+    // event.preventDefault();
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.props.handleSearch(this.state.searchString);
+  };
+
   render() {
     return (
       <Container className="search-side">
-        <div className="d-flex justify-content-between mt-2">
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="inlineCheckbox1"
-              value="option1"
-            ></input>
-            <label className="form-check-label">Món chay</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="inlineCheckbox2"
-              value="option2"
-            ></input>
-            <label className="form-check-label">Món mặn</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="inlineCheckbox3"
-              value="option3"
-            ></input>
-            <label className="form-check-label">Món ngọt</label>
-          </div>
-        </div>
-        <div className="d-flex justify-content-between mt-2 ">
-          <div className="form-check form-check-inline ">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="inlineCheckbox4"
-              value="option4"
-            ></input>
-            <label className="form-check-label">Châu Á</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="inlineCheckbox5"
-              value="option5"
-            ></input>
-            <label className="form-check-label">Châu Âu</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="inlineCheckbox6"
-              value="option6"
-            ></input>
-            <label className="form-check-label">Châu Mỹ</label>
-          </div>
-        </div>
-        <InputGroup className="mt-3">
-          <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1">Tìm kiếm</InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl placeholder="Tên món ăn" />
-          <Button variant="info">
+        <InputGroup className="search-string">
+          <FormControl
+            name="searchString"
+            placeholder="Tìm kiếm món ăn"
+            className="search-string-input"
+            value={this.state.searchString}
+            onChange={this.handleChange}
+          />
+          <Button variant="info" onClick={this.handleSubmit}>
             <FcSearch style={{ fontSize: "20pt" }} />
           </Button>
         </InputGroup>
+
+        <Dropdown>
+          <Dropdown.Toggle
+            variant="info"
+            id="dropdown1"
+            className="select-option"
+          >
+            Xuất xứ món: {this.state.selectRegions}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectRegions: "Châu Á" });
+                this.props.handleRegions("Châu Á");
+              }}
+            >
+              Châu Á
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectRegions: "Châu Âu" });
+                this.props.handleRegions("Châu Âu");
+              }}
+            >
+              Châu Âu
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectRegions: "Châu Mỹ" });
+                this.props.handleRegions("Châu Mỹ");
+              }}
+            >
+              Châu Mỹ
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectRegions: "" });
+                this.props.handleRegions("");
+              }}
+            >
+              Không chọn
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown>
+          <Dropdown.Toggle
+            variant="warning"
+            id="dropdown2"
+            className="select-option"
+          >
+            Loại món ăn: {this.state.selectType}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectType: "Món mặn" });
+                this.props.handleType("Món mặn");
+              }}
+            >
+              Món mặn
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectType: "Món ngọt" });
+                this.props.handleType("Món ngọt");
+              }}
+            >
+              Món ngọt
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectType: "Món chay" });
+                this.props.handleType("Món chay");
+              }}
+            >
+              Món chay
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectType: "" });
+                this.props.handleType("");
+              }}
+            >
+              Không chọn
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown>
+          <Dropdown.Toggle
+            variant="success"
+            id="dropdown3"
+            className="select-option"
+          >
+            Sắp xếp theo: {this.state.selectSort}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectSort: "Giá giảm dần" });
+                this.props.handleSort("Giá giảm dần");
+              }}
+            >
+              Giá giảm dần
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectSort: "Giá tăng dần" });
+                this.props.handleSort("Giá tăng dần");
+              }}
+            >
+              Giá tăng dần
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                this.setState({ selectSort: "" });
+                this.props.handleSort("");
+              }}
+            >
+              Không chọn
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </Container>
     );
   }
