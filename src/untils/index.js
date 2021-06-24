@@ -1,6 +1,6 @@
 import Home from "../pages/Home";
 import CardFood from "../components/CardFood";
-import FoodMenu from "../pages/FoodMenu";
+import FoodMenu from "../components/FoodMenu";
 import Cart from "../pages/Cart";
 import FooterSide from "../components/FooterSide";
 import Header from "../components/Header";

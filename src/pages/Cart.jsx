@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
-import { Button, Modal, Table, Dropdown, Tabs, TabContent, Tab } from "react-bootstrap";
+import { Button, Container, Modal, Table, Dropdown, Tabs, TabContent, Tab, Row, Col, ListGroup, Navbar } from "react-bootstrap";
 import axios from '../axios'
+import CartItem from "../components/CartItem";
 
 export default class Cart extends Component {
   constructor(props) {
@@ -8,13 +9,15 @@ export default class Cart extends Component {
     this.onClickOrder = this.onClickOrder.bind(this)
     this.onPopup = this.onPopup.bind(this)
     this.onViewClicked = this.onViewClicked.bind(this)
-  }
 
-  state = {
-    orders: [],
-    orderSelected: null,
-    isSelected: false,
-    isPopup: false,
+    this.state = {
+      cart: props.cart ? props.cart : [],
+      foods: [],
+      orders: [],
+      orderSelected: null,
+      isSelected: false,
+      isPopup: false,
+    }
   }
 
   componentDidMount() {
@@ -29,18 +32,47 @@ export default class Cart extends Component {
       .catch((err) => {
         console.log(err)
       })
+
+    axios
+      .get("/api/food")
+      .then((res) => {
+        this.setState({
+          foods: res.data.foods
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   render() {
     const order = this.state.orders.find(x => x._id === this.state.orderSelected)
     const removeOrder = (this.state.isPopup && order) ? this.getPopup(order, this.state.isPopup) : <div />
     return (
+      <>
       <div className="container mt-3" size="sm">
         <h4><span role='img' aria-label='accessible-emoji'>🛒</span>Giỏ hàng </h4>
+        <CartViewer foods={this.state.foods}/>
+        <hr/>
+        <h4><span role='img' aria-label='accessible-emoji'>🛒</span>Đơn hàng </h4>
         <OrderViewer orders={this.state.orders} onClickOrder={this.onClickOrder} remove={order} onPopup={this.onPopup} />
         <hr />
         {removeOrder}
       </div>
+      <Navbar fixed="bottom" style={{ backgroundColor: "#fefefe" }} className="mr-0">
+        <Row style={{ width: "100%" }}>
+          <Col className="d-flex justify-content-center align-items-center">
+            <Navbar.Text style={{ color: "black" }}>Số món: 12 <br/> Số lượng: 13</Navbar.Text>
+          </Col>
+          <Col className="d-flex justify-content-center align-items-center">
+            <Navbar.Text style={{ color: "black", fontWeight: "bold" }}>Tổng tiền: 120000</Navbar.Text>
+          </Col>
+          <Col className="d-flex justify-content-end align-items-center">
+            <Button variant="warning" style={{ height: "3rem" }}>Đặt hàng</Button>
+          </Col>
+        </Row>
+    </Navbar>
+    </>
     );
   }
 
@@ -124,6 +156,15 @@ export default class Cart extends Component {
   }
 }
 
+function CartViewer(props) {
+  const items = props.foods.map(food => <CartItem key={food._id} food={food} quantity={1}/>)
+  return (
+    <Container>
+      {items}
+    </Container>
+  );
+}
+
 class OrderViewer extends Component {
   render() {
     const orders = this.props.orders
@@ -205,7 +246,6 @@ class TableRender extends Component {
 
   render() {
     const order = this.props.order
-    const buyer = order.buyer.substring(0, 5) + '[...]'
     const food = order.food
     const checkedRow = this.state.isSelected ? 'table-primary text-dark' : 'table-light text-dark'
 
@@ -213,7 +253,6 @@ class TableRender extends Component {
       return null
     else return (
       <tr key={order._id} className={checkedRow} onClick={this.handleClick}>
-        <td>{buyer}</td>
         <td>{food.name}</td>
         <td>{order.state}</td>
         <td>{order.quantity}</td>
@@ -249,7 +288,6 @@ function TableView(props) {
     <Table striped bordered size="sm" className="text-center shadow-lg">
       <thead>
         <tr>
-          <th>Khách hàng</th>
           <th>Tên món ăn</th>
           <th>State</th>
           <th>Số lượng</th>

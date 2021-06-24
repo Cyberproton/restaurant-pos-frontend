@@ -68,7 +68,7 @@ class Search extends React.Component {
           <InputGroup.Prepend>
             <InputGroup.Text id="basic-addon1">Tìm kiếm</InputGroup.Text>
           </InputGroup.Prepend>
-          <FormControl placeholder="Tên món ăn" />
+          <FormControl placeholder="Tên món ăn" onChange={this.props.onFoodSearch}/>
           <Button variant="info">
             <FcSearch style={{ fontSize: "20pt" }} />
           </Button>

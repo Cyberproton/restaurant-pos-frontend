@@ -2,8 +2,8 @@ import React, { Component } from "react"
 import { Button, Card, CardDeck, Container, Dropdown, DropdownButton, Row } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import axios from '../axios'
-import Search from "../components/Search"
-import SearchBar from "../components/SearchBar"
+import Search from "./Search"
+import SearchBar from "./SearchBar"
 import { replaceLatinDiacritics } from "../untils/functions"
 
 export default class FoodMenu extends Component {
@@ -51,7 +51,7 @@ export default class FoodMenu extends Component {
 
         return (
             <Container>
-                <SearchBar onChange={this.onFoodSearch}/>
+                <Search onFoodSearch={this.onFoodSearch}/>
                 <Row className="row row-cols-2 mt-3">{foodViews}</Row>
             </Container>
         );

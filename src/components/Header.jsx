@@ -50,9 +50,6 @@ export default class Header extends Component {
             <Link to="/" className="mr-4">
               <FcHome style={{ fontSize: "20pt" }} />
             </Link>
-            <Link to="/menu" className="mr-4" style={{ fontSize: "24px" }}>
-              <FcViewDetails style={{ fontSize: "20pt" }} />
-            </Link>
             <Link to="/cart" className="mr-4" style={{ fontSize: "24px" }}>
               <FcPaid style={{ fontSize: "20pt" }} />
             </Link>
