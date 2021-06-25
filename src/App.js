@@ -21,7 +21,7 @@ import "./css/App.css";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.addItem = this.addItem.bind(this);
+    this.changeItem = this.changeItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
 
     this.cookie = new Cookies();
@@ -32,13 +32,19 @@ class App extends Component {
     };
   }
 
-  addItem(item) {
+  changeItem(item) {
     const cart = this.state.cart;
-    const exist = this.state.cart.find(it => it._id === item._id);
-    if (exist) {
+    const existIndex = this.state.cart.findIndex(it => it.id === item.id);
+    if (existIndex > -1) {
+      const exist = this.state.cart[existIndex];
       exist.quantity += item.quantity;
+      if (exist.quantity < 1) {
+        exist.quantity = 1;
+      }
     } else {
-      cart.push(item);
+      if (item.quantity > 0) {
+        cart.push(item);
+      }
     }
     this.setState({
       cart: cart,
@@ -48,9 +54,9 @@ class App extends Component {
 
   removeItem(item) {
     const cart = this.state.cart;
-    const exist = this.state.cart.find(it => it._id === item._id);
-    if (exist) {
-      cart.splice(exist);
+    const existIndex = this.state.cart.findIndex(it => it.id === item.id);
+    if (existIndex > -1) {
+      cart.splice(existIndex, 1);
     }
     this.setState({
       cart: cart,
@@ -74,7 +80,7 @@ class App extends Component {
             <Route 
               exact 
               path="/cart" 
-              component={() => <Cart cart={this.state.cart} addItem={this.addItem} clearCart={this.clearCart}/>} 
+              component={() => <Cart cart={this.state.cart} changeItem={this.changeItem} clearCart={this.clearCart}/>} 
             />
             <Route exact path="/login" component={Login} />
             <Route exact path="/home" component={Home} />
@@ -83,7 +89,7 @@ class App extends Component {
             <Route exact path="/user" component={UserInfo} />
             <Route exact path="/rules" component={Rules} />
             <Route exact path="/menu" component={FoodMenu} />
-            <Route exact path="/food/:id" component={FoodDetail} />
+            <Route exact path="/food/:id" component={() => <FoodDetail changeItem={this.changeItem} />} />
             <Route component={NotFound404}/>
           </Switch>
           <FooterSide />

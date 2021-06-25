@@ -52,7 +52,7 @@ export default class Cart extends Component {
       <>
       <div className="container mt-3" size="sm">
         <h4><span role='img' aria-label='accessible-emoji'>🛒</span>Giỏ hàng </h4>
-        <CartViewer foods={this.state.foods}/>
+        <CartViewer cart={this.state.cart} foods={this.state.foods}/>
         <hr/>
         <h4><span role='img' aria-label='accessible-emoji'>🛒</span>Đơn hàng </h4>
         <OrderViewer orders={this.state.orders} onClickOrder={this.onClickOrder} remove={order} onPopup={this.onPopup} />
@@ -157,7 +157,14 @@ export default class Cart extends Component {
 }
 
 function CartViewer(props) {
-  const items = props.foods.map(food => <CartItem key={food._id} food={food} quantity={1}/>)
+  const items = props.cart.map(item => {
+    const index = props.foods.findIndex(food => food._id === item.id);
+    if (index < 0) {
+      return null;
+    }
+    const food = props.foods[index];
+    return <CartItem key={food._id} food={food} quantity={item.quantity}/>
+  });
   return (
     <Container>
       {items}

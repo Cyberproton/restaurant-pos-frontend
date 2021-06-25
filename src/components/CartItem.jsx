@@ -20,11 +20,11 @@ export default function CartItem(props) {
                         <Col className="my-1 d-flex align-items-center">
                             <InputGroup>
                                 <InputGroup.Prepend>
-                                    <Button variant="outline-dark">-</Button>
+                                    <Button variant="outline-dark" onClick={props.onItemDecrease}>-</Button>
                                 </InputGroup.Prepend>
                                 <FormControl value={quantity} type="number" readOnly/>
                                 <InputGroup.Append>
-                                    <Button variant="outline-dark">+</Button>
+                                    <Button variant="outline-dark" onClick={props.onItemIncrease}>+</Button>
                                 </InputGroup.Append>
                             </InputGroup>
                         </Col>

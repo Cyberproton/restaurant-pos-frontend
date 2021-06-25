@@ -24,10 +24,12 @@ export default function FoodDetail(props) {
     }, [id])
 
     const orderFood = (e) => {
+        /*
         if (!checkLogin()) {
             e.preventDefault();
-            setShowError(true);
-            setMessageError("Bạn cần đăng nhập trước khi đặt hàng");
+            //setShowError(true);
+            //setMessageError("Bạn cần đăng nhập trước khi đặt hàng");
+            props.changeItem({ id: id, quantity: quantity });
         } else {
             e.preventDefault();
             const order = {
@@ -45,7 +47,11 @@ export default function FoodDetail(props) {
                     setShowError(false);
                     setMessageError(message);
                 });
-        }
+        
+        }*/
+        setShowSuccess(true);
+        setMessageSuccess("Món ăn đã được thêm vào giỏ hàng");
+        props.changeItem({ id: id, quantity: quantity });
     }
 
     const success = (
