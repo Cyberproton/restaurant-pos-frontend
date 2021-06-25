@@ -25,7 +25,7 @@ class Payment extends Component {
   };
 
   handlePayment = async () => {
-    await axios.post(`/api/ordertest/payment`, {
+    await axios.post(`/api/order/payment`, {
       _id: this.props.order._id,
       paymentMethod: this.state.selectPayment,
     });

@@ -20,7 +20,7 @@ class Progress extends Component {
 
   getData = async () => {
     const token = localStorage.getItem("token");
-    const res = await axios.get(`/api/ordertest/user`, {
+    const res = await axios.get(`/api/order/user`, {
       headers: { token: token },
     });
     const orders = res.data.orders;
@@ -36,7 +36,7 @@ class Progress extends Component {
   };
 
   handleCancelOrder = async (_id) => {
-    await axios.post(`/api/ordertest/delete`, {
+    await axios.post(`/api/order/delete`, {
       _id: _id,
     });
     this.getData();

@@ -43,7 +43,7 @@ class Cart extends Component {
       quantity += item.amount;
     }
     await axios.post(
-      `/api/ordertest/add`,
+      `/api/order/add`,
       {
         foods: listOrder,
         table: 1,
