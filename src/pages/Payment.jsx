@@ -8,10 +8,10 @@ import {
   Table,
 } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
+import axios from "../axios";
 
 class Payment extends Component {
   state = {
-    confirmOrder: [],
     isOrder: false,
     selectPayment: "cast",
   };
@@ -21,6 +21,14 @@ class Payment extends Component {
   };
 
   handleCancelOrder = () => {
+    this.setState({ isOrder: true });
+  };
+
+  handlePayment = async () => {
+    await axios.post(`/api/ordertest/payment`, {
+      _id: this.props.order._id,
+      paymentMethod: this.state.selectPayment,
+    });
     this.setState({ isOrder: true });
   };
 
@@ -47,7 +55,9 @@ class Payment extends Component {
           <Card.Text>
             Kết nối đến ví Momo và thực hiện thanh toán nhanh chóng tại chỗ
           </Card.Text>
-          <Button variant="success">Thanh toán</Button>{" "}
+          <Button variant="success" onClick={this.handlePayment}>
+            Thanh toán
+          </Button>{" "}
           <Button variant="danger" onClick={this.handleCancelOrder}>
             Hủy thanh toán
           </Button>
@@ -60,7 +70,9 @@ class Payment extends Component {
           <Card.Text>
             Thanh toán trực tuyến qua tài khoản Internet Banking của bạn
           </Card.Text>
-          <Button variant="success">Thanh toán</Button>{" "}
+          <Button variant="success" onClick={this.handlePayment}>
+            Thanh toán
+          </Button>{" "}
           <Button variant="danger" onClick={this.handleCancelOrder}>
             Hủy thanh toán
           </Button>
