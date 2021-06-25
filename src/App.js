@@ -11,11 +11,12 @@ import {
   FoodMenu,
   FoodDetail,
   NotFound404,
+  Progress,
+  Gallery,
 } from "./untils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Cookies from 'universal-cookie';
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import "./css/App.css";
 
 class App extends Component {
@@ -46,8 +47,10 @@ class App extends Component {
         cart.push(item);
       }
     }
+    const numberOfFoods = cart.reduce((x, y) => x + y.quantity, 0);
     this.setState({
       cart: cart,
+      numberOfFoods: numberOfFoods,
     });
     this.cookie.set("cart", cart, { maxAge: 60 * 60 * 24 * 3 });
   }
@@ -58,8 +61,10 @@ class App extends Component {
     if (existIndex > -1) {
       cart.splice(existIndex, 1);
     }
+    const numberOfFoods = cart.reduce((x, y) => x + y.quantity, 0);
     this.setState({
       cart: cart,
+      numberOfFoods: numberOfFoods,
     });
     this.cookie.set("cart", cart, { maxAge: 60 * 60 * 24 * 3 });
   }
@@ -67,6 +72,7 @@ class App extends Component {
   clearCart() {
     this.setState({
       cart: [],
+      numberOfFoods: 0,
     });
     this.cookie.remove("cart");
   }
@@ -92,6 +98,7 @@ class App extends Component {
             <Route exact path="/food/:id" component={() => <FoodDetail changeItem={this.changeItem} />} />
             <Route component={NotFound404}/>
           </Switch>
+          <Gallery />
           <FooterSide />
         </div>
       </Router>

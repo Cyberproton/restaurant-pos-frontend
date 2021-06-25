@@ -76,84 +76,54 @@ export default class Cart extends Component {
     );
   }
 
-  onViewClicked(OrderId, isSelected) {
-    const selectedOrder = this.state.orderSelected
-    if (isSelected) {
-      selectedOrder.push(OrderId)
-    }
-    else {
-      const i = selectedOrder.indexOf(OrderId)
-      selectedOrder.splice(i, 1)
-    }
-    this.setState({
-      selectedOrder: selectedOrder
-    })
-  }
-
-  onClickOrder(OrderId) {
-    if (OrderId === this.state.orderSelected) {
+  getListOrder = () => {
+    if (this.props.count === 0) {
       this.setState({
-        orderSelected: null,
-        isPopup: false,
-        isSelected: false,
-      })
-      return true
+        isEmpty: true,
+      });
+    } else {
+      const listOrder = this.props.cart;
+      this.setState({
+        isEmpty: false,
+        listOrder: listOrder,
+      });
     }
-    else {
-      if (this.state.orderSelected === null) {
-        this.setState({
-          orderSelected: OrderId,
-          isSelected: false,
-          isPopup: false
-        })
-        return true
+  };
+
+  canceOrder = () => {
+    this.props.onClear();
+    this.setState({
+      isEmpty: true,
+      listOrder: [],
+    });
+  };
+
+  handleOrder = async () => {
+    const listOrder = this.state.listOrder;
+    let price = 0;
+    let quantity = 0;
+    for (let item of listOrder) {
+      price += item.price * item.amount;
+      quantity += item.amount;
+    }
+    await axios.post(
+      `/api/ordertest/add`,
+      {
+        foods: listOrder,
+        table: 1,
+        quantity: quantity,
+        payment: price,
+      },
+      {
+        headers: { token: localStorage.getItem("token") },
       }
-    }
-    return false
-  }
-
-  onPopup() {
-    this.setState(prev => ({
-      isPopup: !prev.isPopup
-    }))
-  }
-
-  handleDelete(order) {
-    order.state = 'Canceled'
-    this.setState(prev => ({
-      isPopup: !prev.isPopup,
-    }))
-  }
-
-  getPopup(order, show) {
-    return (
-      <Modal
-        show={show}
-        onHide={this.onPopup}
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header className="bg-warning text-white">
-          <Modal.Title>Xác nhận xóa</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <b>Bạn chuẩn bị xóa đơn hàng:</b>
-          <br />
-          <p>
-            Tên món ăn: {order.food.name} &nbsp; &nbsp; &nbsp;  &nbsp;
-            Số lượng: {order.quantity}  <br />
-            Tổng tiền: {order.food.price * order.quantity}
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => { this.onPopup() }}> Đóng </Button>
-          <Button variant="danger" onClick={() => { this.handleDelete(order) }}>
-            Xóa món ăn
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    )
-  }
+    );
+    this.props.onClear();
+    this.setState({
+      isEmpty: true,
+      listOrder: [],
+    });
+  };
 }
 
 function CartViewer(props) {
@@ -173,84 +143,6 @@ function CartViewer(props) {
 }
 
 class OrderViewer extends Component {
-  render() {
-    const orders = this.props.orders
-    const remove = this.props.remove
-    const onClickOrder = this.props.onClickOrder
-    const onPopup = this.props.onPopup
-    if (orders.length === 0)
-      return (
-        <React.Fragment>
-          <p>
-            <i>Có vẻ không có gì ở đây cả, quý khách vui lòng kiểm tra lại nhé</i>
-            <span role='img' aria-label='accessible-emoji'>🙄</span>
-          </p>
-          <br />
-        </React.Fragment>
-      )
-    else {
-      const listByPending = orders.map((value) => {
-        if (value.state === 'Pending')
-          return <TableRender
-            key={value._id} order={value} onClickOrder={onClickOrder} />
-        else return null
-      })
-
-      const listByAccept = orders.map((value) => {
-        if (value.state === 'Accepted')
-          return <TableRender
-            key={value._id} order={value} onClickOrder={onClickOrder} />
-        else return null
-      })
-
-      const listByReject = orders.map((value) => {
-        if (value.state === 'Rejected')
-          return <TableRender
-            key={value._id} order={value} onClickOrder={onClickOrder} />
-        else return null
-      })
-
-      let a = 0, b = 0, c = 0
-      orders.map(order => {
-        if (order.state === 'Accepted') a += 1
-        if (order.state === 'Pending') b += 1
-        if (order.state === 'Rejected') c += 1
-        return null
-      })
-      return (
-        <div width='100%'>
-          <br />
-          <Tabs defaultActiveKey="Confirmed" justify>
-            <Tab eventKey="Confirmed" title="Đã xác nhận">
-              <TabContent><TableView ListBy={listByAccept} control={a} /></TabContent>
-              {remove ? <Button variant="danger" onClick={onPopup}>Xóa đơn hàng</Button> :
-                <Button className="col m-2" variant="danger" disabled>Xóa đơn hàng</Button>}
-              {console.log(remove)}
-              <Popup />
-            </Tab>
-            <Tab eventKey="Confirming" title="Đang chờ xác nhận">
-              <TabContent><TableView ListBy={listByPending} control={b} /></TabContent>
-              {remove ? <Button variant="danger" onClick={onPopup}>Xóa đơn hàng</Button> : <Button className="col m-2" variant="danger" disabled>Xóa đơn hàng</Button>}
-            </Tab>
-            <Tab eventKey="Reject" title="Từ chối">
-              <TabContent><TableView ListBy={listByReject} control={c} /></TabContent>
-            </Tab>
-          </Tabs>
-        </div>
-      )
-    }
-  }
-}
-
-class TableRender extends Component {
-  constructor(props) {
-    super(props)
-    this.handleClick = this.handleClick.bind(this)
-    this.state = {
-      isSelected: false
-    }
-  }
-
   render() {
     const order = this.props.order
     const food = order.food
@@ -304,65 +196,4 @@ function TableView(props) {
       <tbody>{props.ListBy}</tbody>
     </Table>
   )
-}
-
-function Popup() {
-  const [smShow, setSmShow] = useState(false);
-  const [lgShow, setLgShow] = useState(false);
-
-  const handleShow = () => setSmShow(true);
-  const handleClose = () => setLgShow(false);
-  const handleShow_Lg = () => setLgShow(true);
-
-  return (
-    <div className="container">
-      <Dropdown style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Dropdown.Toggle variant="outline-primary">
-          Thanh toán
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={handleShow_Lg}>Momo</Dropdown.Item>
-          <Dropdown.Item onClick={handleShow_Lg}>Zalo Pay</Dropdown.Item>
-          <Dropdown.Item onClick={handleShow_Lg}>Air Pay</Dropdown.Item>
-          <Dropdown.Item onClick={handleShow_Lg}>ViettelPay</Dropdown.Item>
-          <Dropdown.Item onClick={handleShow_Lg}>Thẻ ngân hàng</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item onClick={handleShow}>Tiền mặt</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-
-      <Modal
-        show={smShow}
-        onHide={() => setSmShow(false)}
-        centered
-      >
-        <Modal.Header>
-          <Modal.Title> Thanh toán </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <i>Vui lòng thanh toán tại quầy thu ngân. </i>
-        </Modal.Body>
-        <Modal.Footer></Modal.Footer>
-      </Modal>
-
-      <Modal
-        size="lg"
-        show={lgShow}
-        onHide={() => setLgShow(false)}
-        aria-labelledby="example-modal-sizes-title-lg"
-        centered
-      >
-        <Modal.Header>
-          <Modal.Title> Thanh toán </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p> Vui lòng mở ứng dụng của bạn lên và đưa cho thu ngân để thanh toán.</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={handleClose}>Đồng ý</Button>
-          <Button variant="warning" onClick={handleClose}>Quay lại</Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
-  );
 }

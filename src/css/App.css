@@ -1,14 +1,16 @@
 body {
   color: black;
+  font-size: 11pt;
 }
 a {
   color: black;
+  text-decoration: none;
 }
 
 .login-form {
-  margin: 50px auto;
-  padding: 40px 20px;
-  width: 80%;
+  margin: 150px auto 50px auto;
+  padding: 50px;
+  width: 40%;
   box-shadow: 5px 10px 18px #888888;
 }
 
@@ -17,27 +19,49 @@ a {
 }
 
 .img-carousel {
-  height: 300px;
+  height: 700px;
+}
+
+.carousel-caption {
+  width: 50%;
+  margin: auto;
+  font-size: 15pt;
+  top: 30%;
+  bottom: 40%;
 }
 
 .caption-carousel {
-  color: black;
-  background-color: rgba(255, 255, 255, 0.87);
+  color: rgb(255, 255, 255);
+  background-color: rgba(19, 19, 19, 0.904);
   border-radius: 20px;
   padding: 20px 30px;
 }
+
 .user-info-container {
-  margin: 50px auto;
-  padding: 0 50px;
+  margin: 100px auto;
+  padding: 30px;
 }
+
 .user-info-container h1 {
   text-transform: uppercase;
   text-align: center;
   color: coral;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
-.user-info-container .user-item-info {
-  margin: 20px 0;
+.user-item-info {
+  width: 750px;
+  margin: 30px auto;
+}
+
+.user-item-info input {
+  width: 400px;
+}
+
+.footer-side {
+  bottom: 0;
+  height: 100px;
+  background-color: #ffc107;
+  width: 100%;
 }
 
 .footer-side {
@@ -47,7 +71,7 @@ a {
   color: white;
   bottom: 0;
   left: 0;
-  padding: 20px 10px 0 0;
+  padding-top: 30px;
   height: auto;
 }
 .footer-side h2 {
@@ -59,7 +83,9 @@ a {
 }
 .footer-side ul {
   list-style: none;
+  text-align: center;
 }
+
 .footer-side .icon {
   background-color: rgb(207, 132, 20);
   text-align: center;
@@ -68,15 +94,349 @@ a {
   font-size: 17pt;
   margin: 10px 30px;
 }
-
-hr.solid {
-  border-top: 3px solid #fff;
-}
-
 .search-side {
-  background-color: rgb(255, 235, 213);
-  padding: 30px 30px 30px 30px;
+  margin-top: 20px;
+  padding: 10px 30px;
 }
-.search-side h5 {
-  margin-top: 10px;
+
+.card-food {
+  position: relative;
+  text-align: center;
+  width: 15%;
+  padding: 0;
+  margin: 10px auto;
+  box-shadow: 2px 2px 4px #797878;
+}
+
+.card-food h6 {
+  margin: 10px;
+}
+
+.card-food img {
+  width: 100%;
+  height: 120px;
+}
+
+.card-food button {
+  margin: auto;
+}
+
+.card-food p {
+  font-size: 11pt;
+}
+
+.card-food-button button {
+  padding: 5px 25px;
+  margin: 0 auto 10px auto;
+}
+
+.header-side {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.count-item {
+  color: rgb(255, 255, 255);
+  font-size: 8pt;
+  border-radius: 50%;
+  background-color: #ff4107;
+  padding: 5px;
+}
+
+.user-button button {
+  margin: 10px;
+}
+
+.delete-button-account {
+  background-color: darkred;
+  margin: 30px 0 0 10px;
+}
+
+.cart-order {
+  margin-top: 80px;
+}
+
+.cart-order h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cart-order button {
+  margin: 50px 20px;
+  padding: 10px 30px;
+}
+
+.cart-order h6 {
+  background-color: bisque;
+  padding: 10px 20px;
+  margin: 20px 20px;
+}
+
+.cart-order li button {
+  margin: 0 3px;
+  padding: 0 5px;
+}
+
+.card-order {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  background-color: white;
+}
+
+.card-order h5 {
+  border: solid rgb(150, 131, 27);
+  border-radius: 10px;
+  width: 150px;
+  padding: 10px;
+  margin: 20px auto 40px auto;
+}
+
+.card-order button {
+  margin: 10px;
+}
+
+.signup-button {
+  margin: auto;
+  padding: 10px 30px;
+}
+
+.list-food {
+  margin: 10px;
+}
+
+.cart-empty {
+  margin-top: 100px;
+}
+
+.cart-empty img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 0;
+}
+
+.cart-empty h1 {
+  text-align: center;
+  width: 80%;
+  padding: 50px;
+  border: solid rgb(255, 153, 0);
+  margin: 100px auto;
+}
+
+.margin-top-50 {
+  margin-top: 50px;
+}
+
+.progress-page {
+  font-size: 12pt;
+  margin: 100px auto;
+}
+
+.progress-page h3 {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.select-option {
+  width: 100%;
+  height: 45px;
+  margin: 5px auto;
+}
+
+.select-option option {
+  width: 100px;
+}
+
+.search-string {
+  width: 100%;
+  height: 50px;
+}
+.search-string-input {
+  height: 100%;
+}
+
+.gallery {
+  display: grid;
+  padding: 20px;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 5vw);
+  grid-gap: 1.5rem;
+}
+
+.gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery__item--1 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 6;
+}
+
+.gallery__item--2 {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 6;
+}
+
+.gallery__item--3 {
+  grid-column-start: 5;
+  grid-column-end: 9;
+  grid-row-start: 1;
+  grid-row-end: 6;
+}
+
+.gallery__item--4 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 6;
+  grid-row-end: 9;
+}
+
+.gallery__item--5 {
+  grid-column-start: 3;
+  grid-column-end: 7;
+  grid-row-start: 6;
+  grid-row-end: 9;
+}
+
+.gallery__item--6 {
+  grid-column-start: 7;
+  grid-column-end: 9;
+  grid-row-start: 6;
+  grid-row-end: 9;
+}
+
+@media all and (max-width: 1200px) {
+  .card-food {
+    width: 23%;
+  }
+}
+
+@media all and (max-width: 850px) {
+  .card-food {
+    width: 30%;
+  }
+}
+
+@media all and (max-width: 620px) {
+  .card-food {
+    width: 40%;
+  }
+}
+
+@media all and (max-width: 550px) {
+  body {
+    color: black;
+    font-size: 11pt;
+  }
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .login-form {
+    margin: 100px auto 50px auto;
+    padding: 40px 20px;
+    width: 80%;
+    box-shadow: 5px 10px 18px #888888;
+  }
+
+  .login-form a {
+    color: rgb(0, 119, 255);
+  }
+
+  .img-carousel {
+    height: 300px;
+  }
+
+  .caption-carousel {
+    color: black;
+    background-color: rgba(255, 255, 255, 0.87);
+    border-radius: 20px;
+    padding: 20px 30px;
+  }
+  .user-info-container {
+    margin: 100px auto 50px auto;
+    padding: 0 10px;
+  }
+  .user-info-container h1 {
+    text-transform: uppercase;
+    text-align: center;
+    color: coral;
+    margin-bottom: 20px;
+  }
+  .user-info-container .user-item-info {
+    margin: 20px 0;
+  }
+
+  .footer-side {
+    bottom: 0;
+    height: 100px;
+    background-color: #ffc107;
+    width: 100%;
+  }
+
+  .footer-side {
+    margin-top: 10px;
+    box-sizing: content-box;
+    background-color: #212529;
+    color: white;
+    bottom: 0;
+    left: 0;
+    padding: 20px 10px 0 0;
+    height: auto;
+  }
+  .footer-side h2 {
+    text-align: center;
+    text-shadow: 1px 1px 2px black, 0 0 1em rgb(229, 255, 0),
+      0 0 0.2em rgb(100, 109, 20);
+    color: white;
+    font-size: 30px;
+  }
+  .footer-side ul {
+    list-style: none;
+  }
+  .footer-side .icon {
+    background-color: rgb(207, 132, 20);
+    text-align: center;
+  }
+  .footer-side .icon-item {
+    font-size: 17pt;
+    margin: 10px 30px;
+  }
+  .search-side {
+    margin-top: 20px;
+    padding: 10px 30px;
+  }
+  .search-side h5 {
+    margin-top: 10px;
+  }
+
+  .card-food {
+    position: relative;
+    text-align: center;
+    width: 47%;
+    padding: 0;
+    margin: 10px auto;
+    box-shadow: 2px 2px 4px #797878;
+  }
+  .carousel-caption {
+    width: 70%;
+    margin: auto;
+    color: rgb(255, 255, 255);
+    background-color: rgba(19, 19, 19, 0.904);
+    font-size: 12pt;
+    top: 70px;
+    bottom: 40px;
+  }
 }

@@ -11,11 +11,11 @@ import Rules from "../pages/Rules";
 import UserInfo from "../pages/UserInfo";
 import FoodDetail from '../pages/FoodDetail'
 import NotFound404 from "../pages/NotFound404";
+import Progress from "../pages/Progress";
+import Gallery from "../components/Gallery";
 
 export {
   Home,
-  CardFood,
-  FoodMenu,
   Cart,
   FooterSide,
   Header,
@@ -24,6 +24,9 @@ export {
   Register,
   Rules,
   UserInfo,
+  FoodMenu,
   FoodDetail,
   NotFound404,
+  Progress,
+  Gallery,
 };

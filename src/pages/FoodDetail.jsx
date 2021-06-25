@@ -14,41 +14,16 @@ export default function FoodDetail(props) {
     const [ showError, setShowError ] = useState(false);
     const [ messageError, setMessageError ] = useState("");
 
-    useEffect(() => {
-        axios
-            .get('/api/food/' + id)
-            .then(res => {
-                setFood(res.data.food)
-            })
-            .catch(err => console.log(err))
-    }, [id])
+  useEffect(() => {
+    axios
+      .get("/api/food/" + id)
+      .then((res) => {
+        setFood(res.data.food);
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
 
     const orderFood = (e) => {
-        /*
-        if (!checkLogin()) {
-            e.preventDefault();
-            //setShowError(true);
-            //setMessageError("Bạn cần đăng nhập trước khi đặt hàng");
-            props.changeItem({ id: id, quantity: quantity });
-        } else {
-            e.preventDefault();
-            const order = {
-                foodId: id,
-                quantity: quantity,
-            };
-            axios
-                .post("/api/order", order)
-                .then(res => {
-                    setShowSuccess(true);
-                    setMessageSuccess("Bạn đã đặt hàng thành công");
-                })
-                .catch(err => {
-                    const message = err.response ? err.response.message : "Lỗi hệ thống";
-                    setShowError(false);
-                    setMessageError(message);
-                });
-        
-        }*/
         setShowSuccess(true);
         setMessageSuccess("Món ăn đã được thêm vào giỏ hàng");
         props.changeItem({ id: id, quantity: quantity });
