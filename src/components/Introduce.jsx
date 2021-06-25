@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Carousel } from "react-bootstrap";
-import carousel1 from "../assets/carousel1.png";
-import carousel2 from "../assets/carousel2.png";
-import carousel3 from "../assets/carousel3.png";
+import carousel1 from "../assets/slide1.jpg";
+import carousel2 from "../assets/slide2.jpg";
+import carousel3 from "../assets/slide3.jpg";
 
 class Introduce extends Component {
   state = {};

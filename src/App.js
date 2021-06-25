@@ -10,6 +10,7 @@ import {
   UserInfo,
   FoodDetail,
   Progress,
+  Gallery,
 } from "./untils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,6 +20,7 @@ class App extends Component {
   state = {
     cart: [],
     numberOfCart: 0,
+    table: 1,
   };
 
   incAmount = (id, n) => {
@@ -59,52 +61,51 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-          <Header count={this.state.numberOfCart} />
-          <Switch>
-            <Route
-              exact
-              path="/cart"
-              render={() => (
-                <Cart
-                  count={this.state.numberOfCart}
-                  cart={this.state.cart}
-                  onInc={this.handleInc}
-                  onincAmount={this.incAmount}
-                  onClear={this.handleClear}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/progress"
-              render={() => (
-                <Progress
-                  count={this.state.numberOfCart}
-                  cart={this.state.cart}
-                  onInc={this.handleInc}
-                  onincAmount={this.incAmount}
-                  onClear={this.handleClear}
-                />
-              )}
-            />
-            <Route exact path="/login" component={Login} />
-            <Route
-              exact
-              path="/"
-              render={() => <Home onInc={this.handleInc} />}
-            />
-            <Route
-              exact
-              path="/food/:id"
-              render={() => <FoodDetail onInc={this.handleInc} />}
-            />
-            <Route exact path="/Register" component={Register} />
-            <Route exact path="/user" component={UserInfo} />
-            <Route exact path="/rules" component={Rules} />
-          </Switch>
-          <FooterSide />
-        </div>
+        <Header count={this.state.numberOfCart} />
+        <Switch>
+          <Route
+            exact
+            path="/cart"
+            render={() => (
+              <Cart
+                count={this.state.numberOfCart}
+                cart={this.state.cart}
+                onInc={this.handleInc}
+                onincAmount={this.incAmount}
+                onClear={this.handleClear}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/progress"
+            render={() => (
+              <Progress
+                count={this.state.numberOfCart}
+                cart={this.state.cart}
+                onInc={this.handleInc}
+                onincAmount={this.incAmount}
+                onClear={this.handleClear}
+              />
+            )}
+          />
+          <Route exact path="/login" component={Login} />
+          <Route
+            exact
+            path="/"
+            render={() => <Home onInc={this.handleInc} />}
+          />
+          <Route
+            exact
+            path="/food/:id"
+            render={() => <FoodDetail onInc={this.handleInc} />}
+          />
+          <Route exact path="/Register" component={Register} />
+          <Route exact path="/user" component={UserInfo} />
+          <Route exact path="/rules" component={Rules} />
+        </Switch>
+        <Gallery />
+        <FooterSide />
       </Router>
     );
   }

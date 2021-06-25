@@ -66,10 +66,6 @@ class Cart extends Component {
       return (
         <div className="cart-empty">
           <h1>Bạn chưa đặt món nào</h1>;
-          <img
-            src="https://stlukesokc.org/wp-content/uploads/2017/05/empty-plate.jpg"
-            alt=""
-          />
         </div>
       );
     }

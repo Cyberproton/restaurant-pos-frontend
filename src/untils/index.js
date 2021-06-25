@@ -9,6 +9,7 @@ import Rules from "../pages/Rules";
 import UserInfo from "../pages/UserInfo";
 import FoodDetail from "../pages/FoodDetail";
 import Progress from "../pages/Progress";
+import Gallery from "../components/Gallery";
 
 export {
   Home,
@@ -22,4 +23,5 @@ export {
   UserInfo,
   FoodDetail,
   Progress,
+  Gallery,
 };
