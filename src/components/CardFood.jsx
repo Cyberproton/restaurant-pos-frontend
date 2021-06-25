@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, InputGroup, FormControl } from "react-bootstrap";
+import { Button, InputGroup, FormControl, Card } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 
 class CardFood extends Component {

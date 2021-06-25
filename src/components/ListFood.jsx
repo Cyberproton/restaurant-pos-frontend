@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import CardFood from "./CardFood";
 import axios from "../axios";
 import { Row } from "react-bootstrap";
-import { compareInc, compareDec } from "../untils/functions";
+import { compareInc, compareDec, replaceLatinDiacritics } from "../untils/functions";
 
 class ListFood extends Component {
   state = {
@@ -24,7 +24,7 @@ class ListFood extends Component {
     let listFood = this.state.foods;
     if (this.props.searchString !== "")
       listFood = listFood.filter((food) =>
-        food.name.includes(this.props.searchString)
+        replaceLatinDiacritics(food.name.toLowerCase()).includes(replaceLatinDiacritics(this.props.searchString.toLowerCase()))
       );
     if (this.props.selectType !== "")
       listFood = listFood.filter((food) => food.type === this.props.selectType);

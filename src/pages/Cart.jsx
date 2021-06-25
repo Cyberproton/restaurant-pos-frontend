@@ -6,9 +6,6 @@ import CartItem from "../components/CartItem";
 export default class Cart extends Component {
   constructor(props) {
     super(props)
-    this.onClickOrder = this.onClickOrder.bind(this)
-    this.onPopup = this.onPopup.bind(this)
-    this.onViewClicked = this.onViewClicked.bind(this)
 
     this.state = {
       cart: props.cart ? props.cart : [],
@@ -55,7 +52,7 @@ export default class Cart extends Component {
         <CartViewer cart={this.state.cart} foods={this.state.foods}/>
         <hr/>
         <h4><span role='img' aria-label='accessible-emoji'>🛒</span>Đơn hàng </h4>
-        <OrderViewer orders={this.state.orders} onClickOrder={this.onClickOrder} remove={order} onPopup={this.onPopup} />
+
         <hr />
         {removeOrder}
       </div>

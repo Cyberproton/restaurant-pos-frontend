@@ -30,12 +30,15 @@ class Search extends React.Component {
   render() {
     return (
       <Container className="search-side">
-        <InputGroup className="mt-3">
-          <InputGroup.Prepend>
-            <InputGroup.Text id="basic-addon1">Tìm kiếm</InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl placeholder="Tên món ăn" onChange={this.props.onFoodSearch}/>
-          <Button variant="info">
+        <InputGroup className="search-string">
+          <FormControl
+            name="searchString"
+            placeholder="Tìm kiếm món ăn"
+            className="search-string-input"
+            value={this.state.searchString}
+            onChange={this.handleChange}
+          />
+          <Button variant="info" onClick={this.handleSubmit}>
             <FcSearch style={{ fontSize: "20pt" }} />
           </Button>
         </InputGroup>

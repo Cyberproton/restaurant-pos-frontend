@@ -35,6 +35,9 @@ class App extends Component {
 
   changeItem(item) {
     const cart = this.state.cart;
+    if (!item.id) {
+      item.id = item._id;
+    }
     const existIndex = this.state.cart.findIndex(it => it.id === item.id);
     if (existIndex > -1) {
       const exist = this.state.cart[existIndex];
@@ -89,8 +92,8 @@ class App extends Component {
               component={() => <Cart cart={this.state.cart} changeItem={this.changeItem} clearCart={this.clearCart}/>} 
             />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/home" component={Home} />
-            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={() => <Home onInc={this.changeItem}/>}/>
+            <Route exact path="/" component={() => <Home onInc={this.changeItem}/>} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/user" component={UserInfo} />
             <Route exact path="/rules" component={Rules} />

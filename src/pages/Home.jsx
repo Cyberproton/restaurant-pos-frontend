@@ -25,7 +25,6 @@ class Home extends Component {
   };
 
   handleSearch = (value) => {
-    console.log(value);
     this.setState({ searchString: value });
   };
 
@@ -33,7 +32,6 @@ class Home extends Component {
     return (
       <>
         <Introduce />
-        <FoodMenu />
         <Search
           handleSearch={this.handleSearch}
           handleRegions={this.handleRegions}
