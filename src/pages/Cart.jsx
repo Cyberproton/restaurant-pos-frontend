@@ -88,13 +88,13 @@ class Cart extends Component {
           <Col xs={3}>
             <Button
               variant="warning"
-              onClick={() => this.props.onincAmount(food.id, -1)}
+              onClick={() => this.props.onincAmount(food._id, -1)}
             >
               -
             </Button>
             <Button
               variant="warning"
-              onClick={() => this.props.onincAmount(food.id, 1)}
+              onClick={() => this.props.onincAmount(food._id, 1)}
             >
               +
             </Button>

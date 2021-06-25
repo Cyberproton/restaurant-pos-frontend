@@ -10,6 +10,7 @@ import UserInfo from "../pages/UserInfo";
 import FoodDetail from "../pages/FoodDetail";
 import Progress from "../pages/Progress";
 import Gallery from "../components/Gallery";
+import Payment from "../pages/Payment";
 
 export {
   Home,
@@ -24,4 +25,5 @@ export {
   FoodDetail,
   Progress,
   Gallery,
+  Payment,
 };

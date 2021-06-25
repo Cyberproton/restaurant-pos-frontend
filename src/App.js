@@ -11,6 +11,7 @@ import {
   FoodDetail,
   Progress,
   Gallery,
+  Payment,
 } from "./untils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,18 +24,11 @@ class App extends Component {
     table: 1,
   };
 
-  incAmount = (id, n) => {
+  incAmount = (_id, n) => {
     let newcart = this.state.cart;
-    for (let i = 0; i < newcart.length; i++) {
-      if (newcart[i].id === id) {
-        if (newcart[i].amount === 1 && n === -1) {
-          newcart.splice(i, 1);
-          break;
-        }
-        newcart[i].amount += n;
-        break;
-      }
-    }
+    const index = newcart.findIndex((obj) => obj._id === _id);
+    newcart[index].amount += n;
+    if (newcart[index].amount === 0) newcart.splice(index, 1);
     this.setState({ numberOfCart: this.state.numberOfCart + n, cart: newcart });
   };
 
@@ -43,7 +37,9 @@ class App extends Component {
     let cart = this.state.cart;
     if (item) {
       amount = item.amount;
-      cart.push(item);
+      const index = cart.findIndex((obj) => obj._id === item._id);
+      if (index !== -1) cart[index].amount += item.amount;
+      else cart.push(item);
     }
     this.setState({
       numberOfCart: this.state.numberOfCart + amount,
@@ -70,25 +66,12 @@ class App extends Component {
               <Cart
                 count={this.state.numberOfCart}
                 cart={this.state.cart}
-                onInc={this.handleInc}
                 onincAmount={this.incAmount}
                 onClear={this.handleClear}
               />
             )}
           />
-          <Route
-            exact
-            path="/progress"
-            render={() => (
-              <Progress
-                count={this.state.numberOfCart}
-                cart={this.state.cart}
-                onInc={this.handleInc}
-                onincAmount={this.incAmount}
-                onClear={this.handleClear}
-              />
-            )}
-          />
+          <Route exact path="/progress" component={Progress} />
           <Route exact path="/login" component={Login} />
           <Route
             exact
@@ -103,6 +86,7 @@ class App extends Component {
           <Route exact path="/Register" component={Register} />
           <Route exact path="/user" component={UserInfo} />
           <Route exact path="/rules" component={Rules} />
+          <Route exact path="/payment" component={Payment} />
         </Switch>
         <Gallery />
         <FooterSide />

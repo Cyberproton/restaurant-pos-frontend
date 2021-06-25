@@ -320,17 +320,62 @@ a {
   .card-food {
     width: 23%;
   }
+  .img-carousel {
+    height: 550px;
+  }
+  .carousel-caption {
+    width: 70%;
+    margin: auto;
+    color: rgb(255, 255, 255);
+    background-color: rgba(19, 19, 19, 0.904);
+    font-size: 12pt;
+    top: 30%;
+    bottom: 30%;
+  }
+}
+
+.payment {
+  margin: 100px 200px;
+}
+
+.payment h2 {
+  text-align: center;
+  margin: 50px auto;
 }
 
 @media all and (max-width: 850px) {
   .card-food {
     width: 30%;
   }
+  .img-carousel {
+    height: 400px;
+  }
+  .carousel-caption {
+    width: 70%;
+    margin: auto;
+    color: rgb(255, 255, 255);
+    background-color: rgba(19, 19, 19, 0.904);
+    font-size: 12pt;
+    top: 30%;
+    bottom: 30%;
+  }
 }
 
 @media all and (max-width: 620px) {
   .card-food {
     width: 40%;
+  }
+  .img-carousel {
+    height: 300px;
+  }
+  .carousel-caption {
+    width: 70%;
+    margin: auto;
+    color: rgb(255, 255, 255);
+    background-color: rgba(19, 19, 19, 0.904);
+    font-size: 12pt;
+    top: 30%;
+    bottom: 15%;
   }
 }
 

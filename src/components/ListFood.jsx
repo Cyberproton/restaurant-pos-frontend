@@ -24,7 +24,7 @@ class ListFood extends Component {
     let listFood = this.state.foods;
     if (this.props.searchString !== "")
       listFood = listFood.filter((food) =>
-        food.name.includes(this.props.searchString)
+        food.name.toLowerCase().includes(this.props.searchString.toLowerCase())
       );
     if (this.props.selectType !== "")
       listFood = listFood.filter((food) => food.type === this.props.selectType);

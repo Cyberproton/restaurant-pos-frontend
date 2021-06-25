@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ListGroup, Container, Button, Table } from "react-bootstrap";
 import axios from "../axios";
+import Payment from "./Payment";
 
 class Progress extends Component {
   state = {
@@ -9,6 +10,8 @@ class Progress extends Component {
     processingOrder: [],
     confirmOrder: [],
     cancelOrder: [],
+    currentOrder: {},
+    isOrder: false,
   };
 
   UNSAFE_componentWillMount() {
@@ -39,9 +42,12 @@ class Progress extends Component {
     this.getData();
   };
 
-  handlePayment = () => {};
+  handlePayment = (order) => {
+    this.setState({ currentOrder: order, isOrder: !this.state.isOrder });
+  };
 
   render() {
+    if (this.state.isOrder) return <Payment order={this.state.currentOrder} />;
     const listNewOrder =
       this.state.newOrder.length === 0 ? (
         <ListGroup.Item> Chưa có đơn nào</ListGroup.Item>
@@ -222,11 +228,8 @@ class Progress extends Component {
               onClick={() => this.handleCancelOrder(order._id)}
             >
               Hủy đơn
-            </Button>
-            <Button
-              variant="success"
-              onClick={() => this.handlePayment(order._id)}
-            >
+            </Button>{" "}
+            <Button variant="success" onClick={() => this.handlePayment(order)}>
               Thanh toán
             </Button>
           </ListGroup.Item>

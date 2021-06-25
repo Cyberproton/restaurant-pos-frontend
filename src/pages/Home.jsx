@@ -24,7 +24,6 @@ class Home extends Component {
   };
 
   handleSearch = (value) => {
-    console.log(value);
     this.setState({ searchString: value });
   };
 
